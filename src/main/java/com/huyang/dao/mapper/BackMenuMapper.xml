@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huyang.dao.mapper.BackMenuMapper">
+	<resultMap id="BaseResultMap" type="com.huyang.dao.po.BackMenu">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="sort" property="sort" jdbcType="TINYINT" />
+		<result column="access_role_level" property="accessRoleLevel"
+			jdbcType="TINYINT" />
+	</resultMap>
+
+	<resultMap id="LevelRelationResultMap" type="com.huyang.dao.po.BackMenu"
+		extends="BaseResultMap">
+		<collection property="children" ofType="com.huyang.dao.po.BackMenu">
+			<id column="pr_id" jdbcType="INTEGER" property="id" />
+			<result column="pr_name" jdbcType="VARCHAR" property="name" />
+			<result column="pr_parent_id" jdbcType="INTEGER" property="parentId" />
+			<result column="pr_id_path" jdbcType="VARCHAR" property="idPath" />
+			<result column="pr_url" jdbcType="VARCHAR" property="url" />
+			<result column="pr_remark" jdbcType="VARCHAR" property="remark" />
+			<result column="pr_sort" jdbcType="TINYINT" property="sort" />
+			<result column="pr_access_role_level" jdbcType="TINYINT"
+				property="accessRoleLevel" />
+			<collection property="children"
+				ofType="com.huyang.dao.po.BackMenu" columnPrefix="cdr_"
+				resultMap="BaseResultMap" />
+		</collection>
+	</resultMap>
+
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, name, parent_id, url, remark, sort,
+		access_role_level
+	</sql>
+
+	<sql id="Level_Relation_Column_List">
+		root.id id,
+		root.name name,
+		root.parent_id parent_id,
+		root.url url,
+		root.remark remark,
+		root.sort sort,
+		root.access_role_level
+		access_role_level,
+		pr.id pr_id,
+		pr.name pr_name,
+		pr.parent_id
+		pr_parent_id,
+		pr.url pr_url,
+		pr.remark pr_remark,
+		pr.sort pr_sort,
+		pr.access_role_level pr_access_role_level,
+		cdr.id cdr_id,
+		cdr.name cdr_name,
+		cdr.parent_id cdr_parent_id,
+		cdr.url cdr_url,
+		cdr.remark cdr_remark,
+		cdr.sort cdr_sort,
+		cdr.access_role_level cdr_access_role_level
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.huyang.dao.po.BackMenuExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from back_menu
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from back_menu
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectAllBackMenus" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from back_menu
+		order by id
+	</select>
+
+	<select id="selectAllBackMenusWithLevelRelation" resultMap="LevelRelationResultMap">
+		select
+		<include refid="Level_Relation_Column_List" />
+		from BACK_MENU root
+		left join BACK_MENU pr on root.id = pr.parent_id
+		left join BACK_MENU cdr on pr.id = cdr.parent_id
+		where root.parent_id =
+		-1 <!-- 根节点的parent_id = -1 -->
+		order by root.sort asc, root.id asc, pr.sort asc, pr.id asc, cdr.sort
+		asc, cdr.id asc
+	</select>
+	<select id="selectRoleBackMenusWithLevelRelation" parameterType="com.huyang.dao.po.User" resultMap="LevelRelationResultMap">
+		select
+		<include refid="Level_Relation_Column_List" />
+		from BACK_MENU root
+		left join BACK_MENU pr on root.id = pr.parent_id
+		left join BACK_MENU cdr on pr.id = cdr.parent_id
+		where root.parent_id =-1 <!-- 根节点的parent_id = -1 -->
+		and pr.access_role_level = ${accessRoleLevele}
+		and cdr.access_role_level = ${accessRoleLevele}
+		order by root.sort asc, root.id asc, pr.sort asc, pr.id asc, cdr.sort
+		asc, cdr.id asc
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		back_menu
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.huyang.dao.po.BackMenuExample">
+		delete from back_menu
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.huyang.dao.po.BackMenu">
+		insert into back_menu (id,
+		name, parent_id,
+		url, remark, sort,
+		icon, access_role_level)
+		values
+		(#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{parentId,jdbcType=INTEGER},
+		#{url,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR}, #{sort,jdbcType=TINYINT},
+		#{icon,jdbcType=VARCHAR}, #{accessRoleLevel,jdbcType=TINYINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.huyang.dao.po.BackMenu">
+		insert into back_menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="sort != null">
+				sort,
+			</if>
+			<if test="accessRoleLevel != null">
+				access_role_level,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=TINYINT},
+			</if>
+			<if test="icon != null">
+				#{icon,jdbcType=VARCHAR},
+			</if>
+			<if test="accessRoleLevel != null">
+				#{accessRoleLevel,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.huyang.dao.po.BackMenuExample"
+		resultType="java.lang.Integer">
+		select count(*) from back_menu
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update back_menu
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.name != null">
+				name = #{record.name,jdbcType=VARCHAR},
+			</if>
+			<if test="record.parentId != null">
+				parent_id = #{record.parentId,jdbcType=INTEGER},
+			</if>
+			<if test="record.url != null">
+				url = #{record.url,jdbcType=VARCHAR},
+			</if>
+			<if test="record.remark != null">
+				remark = #{record.remark,jdbcType=VARCHAR},
+			</if>
+			<if test="record.sort != null">
+				sort = #{record.sort,jdbcType=TINYINT},
+			</if>
+			<if test="record.icon != null">
+				icon = #{record.icon,jdbcType=VARCHAR},
+			</if>
+			<if test="record.accessRoleLevel != null">
+				access_role_level =
+				#{record.accessRoleLevel,jdbcType=TINYINT},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update back_menu
+		set id = #{record.id,jdbcType=INTEGER},
+		name =
+		#{record.name,jdbcType=VARCHAR},
+		parent_id =
+		#{record.parentId,jdbcType=INTEGER},
+		url =
+		#{record.url,jdbcType=VARCHAR},
+		remark =
+		#{record.remark,jdbcType=VARCHAR},
+		sort =
+		#{record.sort,jdbcType=TINYINT},
+		icon =
+		#{record.icon,jdbcType=VARCHAR},
+		access_role_level =
+		#{record.accessRoleLevel,jdbcType=TINYINT}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.huyang.dao.po.BackMenu">
+		update back_menu
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=TINYINT},
+			</if>
+			<if test="accessRoleLevel != null">
+				access_role_level = #{accessRoleLevel,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.huyang.dao.po.BackMenu">
+		update back_menu
+		set name = #{name,jdbcType=VARCHAR},
+		parent_id =
+		#{parentId,jdbcType=INTEGER},
+		url = #{url,jdbcType=VARCHAR},
+		remark =
+		#{remark,jdbcType=VARCHAR},
+		sort = #{sort,jdbcType=TINYINT},
+		icon =
+		#{icon,jdbcType=VARCHAR},
+		access_role_level =
+		#{accessRoleLevel,jdbcType=TINYINT}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="batchDeleteMenusByIds" parameterType="java.util.List">
+		delete from BACK_MENU
+		where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>
