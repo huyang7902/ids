@@ -76,10 +76,11 @@ $(function(){
 	
 
 		$("#form-exam-add").ajaxForm( function (data) {
-			if(data.status == 200){
-				alert(data.msg);
+			var json = $.parseJSON(data);
+			if(json.status == 200){
+				layer.alert('添加成功');
 			}else{
-				alert{"添加失败"};
+				layer.alert('添加失败');
 			}
 			});
 	
