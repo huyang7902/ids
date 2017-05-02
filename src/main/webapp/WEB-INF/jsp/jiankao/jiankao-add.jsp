@@ -75,13 +75,39 @@ $(function(){
 	});
 	
 
-		$("#form-exam-add").ajaxForm( function (data) {
+/* 		$("#form-exam-add").ajaxForm( function (data) {
 			if(data.status == 200){
 				alert(data.msg);
 			}else{
 				alert{"添加失败"};
 			}
-			});
+			}); */
+			 $("#form-exam-add").submit(function(){
+		            $.ajax({
+		                url:"${basePath}/jiankao/jiankao-admin.html?act=add",
+		                data:$('#form-exam-add').serialize(),
+		                dataType:"json",
+		                error:function(data){
+		                    alert(data);
+		                },
+		                success:function(data){
+		                    if(data.status == 200) {
+		                    	$("#page-container").close;
+		                    	layer.open({
+		                    		type: 1,
+		                    		area: ['300px','200px'],
+		                    		fix: false, //不固定
+		                    		maxmin: true,
+		                    		shade:0.4,
+		                    		title: '查看信息',
+		                    		content: '<div>添加成功！</div>'
+		                    	});
+		                    } else {
+		                    	
+		                    }
+		                }
+		            });
+		        });   
 	
 	/* $("#form-member-add").validate({
 		rules:{
