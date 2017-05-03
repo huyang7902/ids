@@ -1,28 +1,28 @@
 package com.huyang.dao.po;
 
 public class User {
-    private Integer uid;
+    private String uid;
 
     private String name;
 
     private String password;
 
-    private Integer tel;
+    private String tel;
 
     private String email;
 
-    private Integer cid;
+    private Integer collegeId;
 
     private Byte accessRoleLevele;
 
     private String des;
 
-    public Integer getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(Integer uid) {
-        this.uid = uid;
+    public void setUid(String uid) {
+        this.uid = uid == null ? null : uid.trim();
     }
 
     public String getName() {
@@ -41,12 +41,12 @@ public class User {
         this.password = password == null ? null : password.trim();
     }
 
-    public Integer getTel() {
+    public String getTel() {
         return tel;
     }
 
-    public void setTel(Integer tel) {
-        this.tel = tel;
+    public void setTel(String tel) {
+        this.tel = tel == null ? null : tel.trim();
     }
 
     public String getEmail() {
@@ -57,12 +57,12 @@ public class User {
         this.email = email == null ? null : email.trim();
     }
 
-    public Integer getCid() {
-        return cid;
+    public Integer getCollegeId() {
+        return collegeId;
     }
 
-    public void setCid(Integer cid) {
-        this.cid = cid;
+    public void setCollegeId(Integer collegeId) {
+        this.collegeId = collegeId;
     }
 
     public Byte getAccessRoleLevele() {

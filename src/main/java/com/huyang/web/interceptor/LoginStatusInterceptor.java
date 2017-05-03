@@ -18,7 +18,6 @@ import com.alibaba.fastjson.JSON;
 import com.huyang.common.utils.CookieUtils;
 import com.huyang.common.utils.JedisClient;
 import com.huyang.common.utils.JsonUtils;
-import com.huyang.dao.po.Admin;
 import com.huyang.dao.po.User;
 import com.huyang.web.Constants;
 import com.huyang.web.RedisKey;

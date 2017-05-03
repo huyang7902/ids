@@ -54,7 +54,7 @@
 					<label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
 					<div class="formControls col-xs-8">
 						<input id="" name="password" type="password" placeholder="密码" value="${param.password }" 
-						datatype="*" nullmsg="密码不能为空" class="input-text size-L">
+						  class="input-text size-L">
 					</div>
 				</div>
 				<div class="row cl">

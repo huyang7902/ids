@@ -30,8 +30,7 @@ public class ExamController {
 	@RequestMapping(params = "act=add")
 	public String jiankaoAdd(@RequestParam(defaultValue = "") String college,
 			@RequestParam(defaultValue = "") String major, Model model) {
-		model.addAttribute("college", college);
-		model.addAttribute("major", major);
+		
 		return "jiankao/jiankao-add";
 	}
 

@@ -31,6 +31,6 @@ public class ExamAdminController {
 		String string = RequestUtil.getString(request, "username");
 		System.out.println(string);
 		System.out.println("11111111111111");
-		return IdsResult.ok();
+		return IdsResult.ok("添加成功！");
 	}
 }

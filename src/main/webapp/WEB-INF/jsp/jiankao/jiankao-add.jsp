@@ -5,152 +5,176 @@
 <!DOCTYPE HTML>
 <html>
 <jsp:include page="/WEB-INF/jsp/common/_header.jsp">
-    <jsp:param name="title" value="监考添加"/>
+	<jsp:param name="title" value="监考添加" />
 </jsp:include>
 <body>
-<article class="page-container">
-	<form action="${basePath}/jiankao/jiankao-admin.html?act=add" method="post" class="form form-horizontal" id="form-exam-add">
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>班级：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+	<article class="page-container">
+		<form action="${basePath}/jiankao/jiankao-admin.html?act=add"
+			method="post" class="form form-horizontal" id="form-exam-add">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>班级：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<span class="select-box" style="width: 150px;"> <select class="select"
+						name="demo1">
+							<option value="" selected>默认select</option>
+							<option value="1">菜单一</option>
+							<option value="2">菜单二</option>
+							<option value="3">菜单三</option>
+					</select>
+					</span>
+				</div>
 			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>课程名：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>课程名：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="username" name="username">
+				</div>
 			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>监考时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-{%d+1}'})" id="datemin" class="input-text Wdate" style="width: 150px;">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>监考时间：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text"
+						onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-{%d+1}'})"
+						id="datemin" class="input-text Wdate" style="width: 150px;">
+				</div>
 			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>监考地点：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>监考地点：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="username" name="username">
+				</div>
 			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>监考人员：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>监考人员：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="username" name="username"> <input type="text"
+						class="input-text" value="" placeholder="" id="username"
+						name="username">
+				</div>
 			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>监考人员要求：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="beizhu" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
-				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red"></span>监考人员要求：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<textarea name="beizhu" cols="" rows="" class="textarea"
+						placeholder="说点什么...最少输入10个字符"
+						onKeyUp="$.Huitextarealength(this,100)"></textarea>
+					<p class="textarea-numberbar">
+						<em class="textarea-length">0</em>/100
+					</p>
+				</div>
 			</div>
-		</div>
-		
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<input class="btn btn-primary radius" type="submit"  value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+					<input class="btn btn-primary radius" type="submit"
+						value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+				</div>
 			</div>
-		</div>
-	</form>
-</article>
+		</form>
+	</article>
 
 	<!--_footer 作为公共模版分离出去-->
-<jsp:include page="/WEB-INF/jsp/common/_footer.jsp"/>
+	<jsp:include page="/WEB-INF/jsp/common/_footer.jsp" />
 	<!--/_footer 作为公共模版分离出去-->
 
-<!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="${resourcesPath}/lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="${resourcesPath}/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
-<script type="text/javascript" src="${resourcesPath}/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
-<script type="text/javascript" src="${resourcesPath}/lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript">
-$(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
-	
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript"
+		src="${resourcesPath}/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+	<script type="text/javascript"
+		src="${resourcesPath}/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript"
+		src="${resourcesPath}/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript"
+		src="${resourcesPath}/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('.skin-minimal input').iCheck({
+				checkboxClass : 'icheckbox-blue',
+				radioClass : 'iradio-blue',
+				increaseArea : '20%'
+			});
 
+			$("#form-exam-add").ajaxForm(function(data) {
+				var json = $.parseJSON(data);
+				if (json.status == 200) {
+					layer.alert(json.data);
 
-/* 		$("#form-exam-add").ajaxForm( function (data) {
-			if(data.status == 200){
-				alert(data.msg);
+				} else {
+					layer.alert(json.data);
+				}
+			});
 
-		$("#form-exam-add").ajaxForm( function (data) {
-			var json = $.parseJSON(data);
-			if(json.status == 200){
-				layer.alert('添加成功');
+			/* $("#form-exam-add").submit(function(){
+			       $.ajax({
+			           url:"${basePath}/jiankao/jiankao-admin.html?act=add",
+			           data:$('#form-exam-add').serialize(),
+			           dataType:"json",
+			           error:function(data){
+			               alert(data);
+			           },
+			           success:function(data){
+			               if(data.status == 200) {
+			               	$("#page-container").close;
+			               	layer.open({
+			               		type: 1,
+			               		area: ['300px','200px'],
+			               		fix: false, //不固定
+			               		maxmin: true,
+			               		shade:0.4,
+			               		title: '查看信息',
+			               		content: '<div>添加成功！</div>'
+			               	});
+			               } else {
+			               	
+			               }
+			           }
+			       });
+			   });    */
 
-			}else{
-				layer.alert('添加失败');
-			}
+			/* $("#form-member-add").validate({
+				rules:{
+					username:{
+						required:true,
+						minlength:2,
+						maxlength:16
+					},
+					sex:{
+						required:true,
+					},
+					mobile:{
+						required:true,
+						isMobile:true,
+					},
+					email:{
+						required:true,
+						email:true,
+					},
+					uploadfile:{
+						required:true,
+					},
+					
+				},
+				onkeyup:false,
+				focusCleanup:true,
+				success:"valid",
+				submitHandler:function(form){
+					//$(form).ajaxSubmit();
+					var index = parent.layer.getFrameIndex(window.name);
+					//parent.$('.btn-refresh').click();
+					parent.layer.close(index);
+				}
 			}); */
-			 $("#form-exam-add").submit(function(){
-		            $.ajax({
-		                url:"${basePath}/jiankao/jiankao-admin.html?act=add",
-		                data:$('#form-exam-add').serialize(),
-		                dataType:"json",
-		                error:function(data){
-		                    alert(data);
-		                },
-		                success:function(data){
-		                    if(data.status == 200) {
-		                    	$("#page-container").close;
-		                    	layer.open({
-		                    		type: 1,
-		                    		area: ['300px','200px'],
-		                    		fix: false, //不固定
-		                    		maxmin: true,
-		                    		shade:0.4,
-		                    		title: '查看信息',
-		                    		content: '<div>添加成功！</div>'
-		                    	});
-		                    } else {
-		                    	
-		                    }
-		                }
-		            });
-		        });   
-	
-	/* $("#form-member-add").validate({
-		rules:{
-			username:{
-				required:true,
-				minlength:2,
-				maxlength:16
-			},
-			sex:{
-				required:true,
-			},
-			mobile:{
-				required:true,
-				isMobile:true,
-			},
-			email:{
-				required:true,
-				email:true,
-			},
-			uploadfile:{
-				required:true,
-			},
-			
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
-			//$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-		}
-	}); */
-});
-</script> 
-<!--/请在上方写此页面业务相关的脚本-->
+		});
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
 </body>
 </html>

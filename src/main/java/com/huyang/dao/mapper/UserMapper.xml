@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.huyang.dao.mapper.UserMapper" >
   <resultMap id="BaseResultMap" type="com.huyang.dao.po.User" >
-    <id column="uid" property="uid" jdbcType="INTEGER" />
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="tel" property="tel" jdbcType="INTEGER" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="college_id" property="collegeId" jdbcType="INTEGER" />
     <result column="access_role_levele" property="accessRoleLevele" jdbcType="TINYINT" />
     <result column="des" property="des" jdbcType="VARCHAR" />
   </resultMap>
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    uid, name, password, tel, email, cid, access_role_levele, des
+    uid, name, password, tel, email, college_id, access_role_levele, des
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huyang.dao.po.UserExample" >
     select
@@ -86,15 +86,15 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from user
-    where uid = #{uid,jdbcType=INTEGER}
+    where uid = #{uid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from user
-    where uid = #{uid,jdbcType=INTEGER}
+    where uid = #{uid,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.huyang.dao.po.UserExample" >
     delete from user
@@ -104,11 +104,11 @@
   </delete>
   <insert id="insert" parameterType="com.huyang.dao.po.User" >
     insert into user (uid, name, password, 
-      tel, email, cid, access_role_levele, 
-      des)
-    values (#{uid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{tel,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER}, #{accessRoleLevele,jdbcType=TINYINT}, 
-      #{des,jdbcType=VARCHAR})
+      tel, email, college_id, 
+      access_role_levele, des)
+    values (#{uid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{collegeId,jdbcType=INTEGER}, 
+      #{accessRoleLevele,jdbcType=TINYINT}, #{des,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.huyang.dao.po.User" >
     insert into user
@@ -128,8 +128,8 @@
       <if test="email != null" >
         email,
       </if>
-      <if test="cid != null" >
-        cid,
+      <if test="collegeId != null" >
+        college_id,
       </if>
       <if test="accessRoleLevele != null" >
         access_role_levele,
@@ -140,7 +140,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="uid != null" >
-        #{uid,jdbcType=INTEGER},
+        #{uid,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -149,13 +149,13 @@
         #{password,jdbcType=VARCHAR},
       </if>
       <if test="tel != null" >
-        #{tel,jdbcType=INTEGER},
+        #{tel,jdbcType=VARCHAR},
       </if>
       <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="cid != null" >
-        #{cid,jdbcType=INTEGER},
+      <if test="collegeId != null" >
+        #{collegeId,jdbcType=INTEGER},
       </if>
       <if test="accessRoleLevele != null" >
         #{accessRoleLevele,jdbcType=TINYINT},
@@ -175,7 +175,7 @@
     update user
     <set >
       <if test="record.uid != null" >
-        uid = #{record.uid,jdbcType=INTEGER},
+        uid = #{record.uid,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -184,13 +184,13 @@
         password = #{record.password,jdbcType=VARCHAR},
       </if>
       <if test="record.tel != null" >
-        tel = #{record.tel,jdbcType=INTEGER},
+        tel = #{record.tel,jdbcType=VARCHAR},
       </if>
       <if test="record.email != null" >
         email = #{record.email,jdbcType=VARCHAR},
       </if>
-      <if test="record.cid != null" >
-        cid = #{record.cid,jdbcType=INTEGER},
+      <if test="record.collegeId != null" >
+        college_id = #{record.collegeId,jdbcType=INTEGER},
       </if>
       <if test="record.accessRoleLevele != null" >
         access_role_levele = #{record.accessRoleLevele,jdbcType=TINYINT},
@@ -205,12 +205,12 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update user
-    set uid = #{record.uid,jdbcType=INTEGER},
+    set uid = #{record.uid,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
-      tel = #{record.tel,jdbcType=INTEGER},
+      tel = #{record.tel,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR},
-      cid = #{record.cid,jdbcType=INTEGER},
+      college_id = #{record.collegeId,jdbcType=INTEGER},
       access_role_levele = #{record.accessRoleLevele,jdbcType=TINYINT},
       des = #{record.des,jdbcType=VARCHAR}
     <if test="_parameter != null" >
@@ -227,13 +227,13 @@
         password = #{password,jdbcType=VARCHAR},
       </if>
       <if test="tel != null" >
-        tel = #{tel,jdbcType=INTEGER},
+        tel = #{tel,jdbcType=VARCHAR},
       </if>
       <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="cid != null" >
-        cid = #{cid,jdbcType=INTEGER},
+      <if test="collegeId != null" >
+        college_id = #{collegeId,jdbcType=INTEGER},
       </if>
       <if test="accessRoleLevele != null" >
         access_role_levele = #{accessRoleLevele,jdbcType=TINYINT},
@@ -242,17 +242,17 @@
         des = #{des,jdbcType=VARCHAR},
       </if>
     </set>
-    where uid = #{uid,jdbcType=INTEGER}
+    where uid = #{uid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.huyang.dao.po.User" >
     update user
     set name = #{name,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
-      tel = #{tel,jdbcType=INTEGER},
+      tel = #{tel,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      cid = #{cid,jdbcType=INTEGER},
+      college_id = #{collegeId,jdbcType=INTEGER},
       access_role_levele = #{accessRoleLevele,jdbcType=TINYINT},
       des = #{des,jdbcType=VARCHAR}
-    where uid = #{uid,jdbcType=INTEGER}
+    where uid = #{uid,jdbcType=VARCHAR}
   </update>
 </mapper>
