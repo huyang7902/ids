@@ -1,26 +1,26 @@
 package com.huyang.dao.po;
 
 public class Profession {
-    private String pid;
+    private String professionId;
 
-    private String name;
+    private String professionName;
 
     private String collegeId;
 
-    public String getPid() {
-        return pid;
+    public String getProfessionId() {
+        return professionId;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid == null ? null : pid.trim();
+    public void setProfessionId(String professionId) {
+        this.professionId = professionId == null ? null : professionId.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getProfessionName() {
+        return professionName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setProfessionName(String professionName) {
+        this.professionName = professionName == null ? null : professionName.trim();
     }
 
     public String getCollegeId() {

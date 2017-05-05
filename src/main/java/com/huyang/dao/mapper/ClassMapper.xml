@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.huyang.dao.mapper.CollegeMapper" >
-  <resultMap id="BaseResultMap" type="com.huyang.dao.po.College" >
-    <id column="college_id" property="collegeId" jdbcType="VARCHAR" />
-    <result column="college_name" property="collegeName" jdbcType="VARCHAR" />
+<mapper namespace="com.huyang.dao.mapper.ClassMapper" >
+  <resultMap id="BaseResultMap" type="com.huyang.dao.po.Class" >
+    <result column="class_id" property="classId" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="pro_id" property="proId" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -64,15 +66,25 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    college_id, college_name
+    class_id, class_name, pro_id, grade
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huyang.dao.po.CollegeExample" >
+  
+  <select id="findClassByprofessionId" resultMap="BaseResultMap" parameterType="java.lang.String">
+	SELECT DISTINCT
+	grade,
+	pro_id
+	FROM
+	class
+	where class.pro_id = #{professionId}
+  </select>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huyang.dao.po.ClassExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from college
+    from class
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -80,59 +92,69 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from college
-    where college_id = #{collegeId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from college
-    where college_id = #{collegeId,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.huyang.dao.po.CollegeExample" >
-    delete from college
+  <delete id="deleteByExample" parameterType="com.huyang.dao.po.ClassExample" >
+    delete from class
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.huyang.dao.po.College" >
-    insert into college (college_id, college_name)
-    values (#{collegeId,jdbcType=VARCHAR}, #{collegeName,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.huyang.dao.po.Class" >
+    insert into class (class_id, class_name, pro_id, 
+      grade)
+    values (#{classId,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{proId,jdbcType=VARCHAR}, 
+      #{grade,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.huyang.dao.po.College" >
-    insert into college
+  <insert id="insertSelective" parameterType="com.huyang.dao.po.Class" >
+    insert into class
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="collegeId != null" >
-        college_id,
+      <if test="classId != null" >
+        class_id,
       </if>
-      <if test="collegeName != null" >
-        college_name,
+      <if test="className != null" >
+        class_name,
+      </if>
+      <if test="proId != null" >
+        pro_id,
+      </if>
+      <if test="grade != null" >
+        grade,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="collegeId != null" >
-        #{collegeId,jdbcType=VARCHAR},
+      <if test="classId != null" >
+        #{classId,jdbcType=VARCHAR},
       </if>
-      <if test="collegeName != null" >
-        #{collegeName,jdbcType=VARCHAR},
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="proId != null" >
+        #{proId,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.huyang.dao.po.CollegeExample" resultType="java.lang.Integer" >
-    select count(*) from college
+  <select id="countByExample" parameterType="com.huyang.dao.po.ClassExample" resultType="java.lang.Integer" >
+    select count(*) from class
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update college
+    update class
     <set >
-      <if test="record.collegeId != null" >
-        college_id = #{record.collegeId,jdbcType=VARCHAR},
+      <if test="record.classId != null" >
+        class_id = #{record.classId,jdbcType=VARCHAR},
       </if>
-      <if test="record.collegeName != null" >
-        college_name = #{record.collegeName,jdbcType=VARCHAR},
+      <if test="record.className != null" >
+        class_name = #{record.className,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proId != null" >
+        pro_id = #{record.proId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grade != null" >
+        grade = #{record.grade,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -140,25 +162,13 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update college
-    set college_id = #{record.collegeId,jdbcType=VARCHAR},
-      college_name = #{record.collegeName,jdbcType=VARCHAR}
+    update class
+    set class_id = #{record.classId,jdbcType=VARCHAR},
+      class_name = #{record.className,jdbcType=VARCHAR},
+      pro_id = #{record.proId,jdbcType=VARCHAR},
+      grade = #{record.grade,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.huyang.dao.po.College" >
-    update college
-    <set >
-      <if test="collegeName != null" >
-        college_name = #{collegeName,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where college_id = #{collegeId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.huyang.dao.po.College" >
-    update college
-    set college_name = #{collegeName,jdbcType=VARCHAR}
-    where college_id = #{collegeId,jdbcType=VARCHAR}
   </update>
 </mapper>

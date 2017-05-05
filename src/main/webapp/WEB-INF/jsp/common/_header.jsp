@@ -10,8 +10,8 @@
 <meta http-equiv="Cache-Control" CONTENT="no-cache">
 <meta http-equiv="Pragma" CONTENT="no-cache">
 <!--[if lt IE 9]>
-    <script type="text/javascript" src="${BasePath}/lib/html5shiv.js"></script>
-    <script type="text/javascript" src="${BasePath}/lib/respond.min.js"></script>
+    <script type="text/javascript" src="${resourcesPath}/lib/html5shiv.js"></script>
+    <script type="text/javascript" src="${resourcesPath}/lib/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" type="text/css" href="${resourcesPath}/static/h-ui/css/H-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="${resourcesPath}/static/h-ui.admin/css/H-ui.admin.css" />

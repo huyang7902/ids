@@ -1,4 +1,4 @@
-package com.huyang.service.impl.user;
+package com.huyang.service.impl;
 
 import java.util.List;
 import java.util.UUID;

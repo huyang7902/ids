@@ -62,7 +62,7 @@
 						 <c:forEach items="${parent.children}" var="child">
 						 	<ul>
 						 		<li>
-						 			<a data-href="${basePath}${child.url}&college=${parent.name}&major=${child.name}" data-title="${child.name }" href="javascript:void(0)" >${child.name }</a>
+						 			<a id="menu-a-${parent.id}" data-href="${basePath}${child.url}&college=${parent.name}&profession=${child.name}" data-title="${child.name }"  href="javascript:void(0)" >${child.name }</a>
 						 		</li>
 						 	</ul>
 						 
@@ -124,6 +124,16 @@ $(function(){
 		}
 	});*/
 });
+
+function urlDec(id) {
+	var url = $("#" + id).attr("data-href");
+	alert(url);
+	var ss = encodeURI(url);
+	
+	alert(ss);
+	$("#" + id).attr("data-href",encodeURI(url));
+}
+
 /*个人信息*/
 function myselfinfo(){
 	layer.open({

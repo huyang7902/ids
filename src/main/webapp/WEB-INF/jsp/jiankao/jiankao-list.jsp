@@ -9,7 +9,7 @@
 <body>
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
-		${param.college } <span class="c-gray en">&gt;</span> ${param.major } <a
+		${college.collegeName } <span class="c-gray en">&gt;</span> ${profession.professionName } <a
 			class="btn btn-success radius r"
 			style="line-height: 1.6em; margin-top: 3px"
 			href="javascript:location.replace(location.href);" title="刷新"><i
@@ -17,14 +17,16 @@
 	</nav>
 	<div class="page-container">
 		<div class="text-c">
-			选择班级： <select class="input-text" style="width: 130px;" name="banji"
-				id="banji">
-				<option value="">---选择班级---</option>
+			<input id="professionId" name="professionId" hidden="true" value="${profession.professionId }"/>
+			选择年级： <select class="input-text" style="width: 130px;" name="grade" id="grade" onchange="getClass()">
+				<option value="">---选择年级---</option>
 				<!-- 循环遍历班级 -->
-				<c:forEach items="${parents }" var="parent">
-					<option value="${parent.cid }"
-						<c:if test="${parent.cid eq pid }">selected="selected"</c:if>>${parent.cname }</option>
+				<c:forEach items="${gradeList }" var="grade">
+					<option value="${grade.grade }">${grade.grade }级</option>
 				</c:forEach>
+			</select> 选择班级： <select class="input-text"
+				style="max-width: 150px;" name="className" id="className">
+				<option value="">---选择班级---</option>
 			</select> 日期范围： <input type="text"
 				onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')}' })"
 				id="datemin" class="input-text Wdate" style="width: 120px;">
@@ -43,7 +45,7 @@
 			<span class="l"><a href="javascript:;" onclick="datadel()"
 				class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
 					批量删除</a> <a href="javascript:;"
-				onclick="jiankao_add('添加用户','jiankao-list.html?act=add','','510')"
+				onclick="jiankao_add('添加用户','jiankao-list.html?act=add&collegeId=${college.collegeId}&professionId=${profession.professionId }','','620')"
 				class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
 					添加监考</a></span> <span class="r">共有数据：<strong>88</strong> 条
 			</span>
@@ -134,6 +136,9 @@
 		src="${resourcesPath}/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="${resourcesPath}/lib/laypage/1.2/laypage.js"></script>
 	<script type="text/javascript">
+	
+
+	/*-----------------------------------------------------------------*/
 		$(function() {
 			$('.table-sort').dataTable({
 				"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
@@ -148,6 +153,35 @@
 			});
 
 		});
+	
+		function getClass() {
+			var g = $("#grade").val();
+			var p = $("#professionId").val();
+			var class1 = {
+				grade:g,
+				professionId:p
+			};
+			var select = $("#className").html("");
+			var html;
+			select.append("<option value="+">---选择班级---</option>");
+			$.ajax({
+				type : 'POST',
+				url : '${basePath}/jiankao/jiankao-list.html?act=getClass',
+				dataType : 'json',
+				data : class1,
+				success : function(data) {
+					$.each(data, function(i, n){
+						select.append("<option value=" + n.classId + ">" + n.className + "</option>");
+					});
+					//select.append(html);
+					
+							},
+				error : function(data) {
+					console.log(data.msg);
+				},
+			});
+		}
+	
 		/*用户-添加*/
 		function jiankao_add(title, url, w, h) {
 			layer_show(title, url, w, h);

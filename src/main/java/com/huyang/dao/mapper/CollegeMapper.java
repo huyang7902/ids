@@ -10,7 +10,7 @@ public interface CollegeMapper {
 
     int deleteByExample(CollegeExample example);
 
-    int deleteByPrimaryKey(String id);
+    int deleteByPrimaryKey(String collegeId);
 
     int insert(College record);
 
@@ -18,7 +18,7 @@ public interface CollegeMapper {
 
     List<College> selectByExample(CollegeExample example);
 
-    College selectByPrimaryKey(String id);
+    College selectByPrimaryKey(String collegeId);
 
     int updateByExampleSelective(@Param("record") College record, @Param("example") CollegeExample example);
 

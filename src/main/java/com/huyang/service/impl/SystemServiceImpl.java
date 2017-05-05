@@ -1,4 +1,4 @@
-package com.huyang.service.impl.system;
+package com.huyang.service.impl;
 
 import java.util.List;
 

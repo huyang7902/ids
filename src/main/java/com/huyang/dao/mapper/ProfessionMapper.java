@@ -10,7 +10,7 @@ public interface ProfessionMapper {
 
     int deleteByExample(ProfessionExample example);
 
-    int deleteByPrimaryKey(String pid);
+    int deleteByPrimaryKey(String professionId);
 
     int insert(Profession record);
 
@@ -18,7 +18,7 @@ public interface ProfessionMapper {
 
     List<Profession> selectByExample(ProfessionExample example);
 
-    Profession selectByPrimaryKey(String pid);
+    Profession selectByPrimaryKey(String professionId);
 
     int updateByExampleSelective(@Param("record") Profession record, @Param("example") ProfessionExample example);
 

@@ -104,143 +104,143 @@ public class ProfessionExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andPidIsNull() {
-            addCriterion("pid is null");
+        public Criteria andProfessionIdIsNull() {
+            addCriterion("profession_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPidIsNotNull() {
-            addCriterion("pid is not null");
+        public Criteria andProfessionIdIsNotNull() {
+            addCriterion("profession_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPidEqualTo(String value) {
-            addCriterion("pid =", value, "pid");
+        public Criteria andProfessionIdEqualTo(String value) {
+            addCriterion("profession_id =", value, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidNotEqualTo(String value) {
-            addCriterion("pid <>", value, "pid");
+        public Criteria andProfessionIdNotEqualTo(String value) {
+            addCriterion("profession_id <>", value, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidGreaterThan(String value) {
-            addCriterion("pid >", value, "pid");
+        public Criteria andProfessionIdGreaterThan(String value) {
+            addCriterion("profession_id >", value, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidGreaterThanOrEqualTo(String value) {
-            addCriterion("pid >=", value, "pid");
+        public Criteria andProfessionIdGreaterThanOrEqualTo(String value) {
+            addCriterion("profession_id >=", value, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidLessThan(String value) {
-            addCriterion("pid <", value, "pid");
+        public Criteria andProfessionIdLessThan(String value) {
+            addCriterion("profession_id <", value, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidLessThanOrEqualTo(String value) {
-            addCriterion("pid <=", value, "pid");
+        public Criteria andProfessionIdLessThanOrEqualTo(String value) {
+            addCriterion("profession_id <=", value, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidLike(String value) {
-            addCriterion("pid like", value, "pid");
+        public Criteria andProfessionIdLike(String value) {
+            addCriterion("profession_id like", value, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidNotLike(String value) {
-            addCriterion("pid not like", value, "pid");
+        public Criteria andProfessionIdNotLike(String value) {
+            addCriterion("profession_id not like", value, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidIn(List<String> values) {
-            addCriterion("pid in", values, "pid");
+        public Criteria andProfessionIdIn(List<String> values) {
+            addCriterion("profession_id in", values, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidNotIn(List<String> values) {
-            addCriterion("pid not in", values, "pid");
+        public Criteria andProfessionIdNotIn(List<String> values) {
+            addCriterion("profession_id not in", values, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidBetween(String value1, String value2) {
-            addCriterion("pid between", value1, value2, "pid");
+        public Criteria andProfessionIdBetween(String value1, String value2) {
+            addCriterion("profession_id between", value1, value2, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andPidNotBetween(String value1, String value2) {
-            addCriterion("pid not between", value1, value2, "pid");
+        public Criteria andProfessionIdNotBetween(String value1, String value2) {
+            addCriterion("profession_id not between", value1, value2, "professionId");
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNull() {
-            addCriterion("name is null");
+        public Criteria andProfessionNameIsNull() {
+            addCriterion("profession_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNotNull() {
-            addCriterion("name is not null");
+        public Criteria andProfessionNameIsNotNull() {
+            addCriterion("profession_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNameEqualTo(String value) {
-            addCriterion("name =", value, "name");
+        public Criteria andProfessionNameEqualTo(String value) {
+            addCriterion("profession_name =", value, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            addCriterion("name <>", value, "name");
+        public Criteria andProfessionNameNotEqualTo(String value) {
+            addCriterion("profession_name <>", value, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThan(String value) {
-            addCriterion("name >", value, "name");
+        public Criteria andProfessionNameGreaterThan(String value) {
+            addCriterion("profession_name >", value, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("name >=", value, "name");
+        public Criteria andProfessionNameGreaterThanOrEqualTo(String value) {
+            addCriterion("profession_name >=", value, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThan(String value) {
-            addCriterion("name <", value, "name");
+        public Criteria andProfessionNameLessThan(String value) {
+            addCriterion("profession_name <", value, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("name <=", value, "name");
+        public Criteria andProfessionNameLessThanOrEqualTo(String value) {
+            addCriterion("profession_name <=", value, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameLike(String value) {
-            addCriterion("name like", value, "name");
+        public Criteria andProfessionNameLike(String value) {
+            addCriterion("profession_name like", value, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotLike(String value) {
-            addCriterion("name not like", value, "name");
+        public Criteria andProfessionNameNotLike(String value) {
+            addCriterion("profession_name not like", value, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameIn(List<String> values) {
-            addCriterion("name in", values, "name");
+        public Criteria andProfessionNameIn(List<String> values) {
+            addCriterion("profession_name in", values, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            addCriterion("name not in", values, "name");
+        public Criteria andProfessionNameNotIn(List<String> values) {
+            addCriterion("profession_name not in", values, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("name between", value1, value2, "name");
+        public Criteria andProfessionNameBetween(String value1, String value2) {
+            addCriterion("profession_name between", value1, value2, "professionName");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("name not between", value1, value2, "name");
+        public Criteria andProfessionNameNotBetween(String value1, String value2) {
+            addCriterion("profession_name not between", value1, value2, "professionName");
             return (Criteria) this;
         }
 

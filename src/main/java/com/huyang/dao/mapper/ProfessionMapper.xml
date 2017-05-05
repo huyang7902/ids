@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.huyang.dao.mapper.ProfessionMapper" >
   <resultMap id="BaseResultMap" type="com.huyang.dao.po.Profession" >
-    <id column="pid" property="pid" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
+    <id column="profession_id" property="professionId" jdbcType="VARCHAR" />
+    <result column="profession_name" property="professionName" jdbcType="VARCHAR" />
     <result column="college_id" property="collegeId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -65,7 +65,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    pid, name, college_id
+    profession_id, profession_name, college_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huyang.dao.po.ProfessionExample" >
     select
@@ -85,11 +85,11 @@
     select 
     <include refid="Base_Column_List" />
     from profession
-    where pid = #{pid,jdbcType=VARCHAR}
+    where profession_id = #{professionId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from profession
-    where pid = #{pid,jdbcType=VARCHAR}
+    where profession_id = #{professionId,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.huyang.dao.po.ProfessionExample" >
     delete from profession
@@ -98,30 +98,30 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.huyang.dao.po.Profession" >
-    insert into profession (pid, name, college_id
+    insert into profession (profession_id, profession_name, college_id
       )
-    values (#{pid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{collegeId,jdbcType=VARCHAR}
+    values (#{professionId,jdbcType=VARCHAR}, #{professionName,jdbcType=VARCHAR}, #{collegeId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.huyang.dao.po.Profession" >
     insert into profession
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="pid != null" >
-        pid,
+      <if test="professionId != null" >
+        profession_id,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="professionName != null" >
+        profession_name,
       </if>
       <if test="collegeId != null" >
         college_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="pid != null" >
-        #{pid,jdbcType=VARCHAR},
+      <if test="professionId != null" >
+        #{professionId,jdbcType=VARCHAR},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="professionName != null" >
+        #{professionName,jdbcType=VARCHAR},
       </if>
       <if test="collegeId != null" >
         #{collegeId,jdbcType=VARCHAR},
@@ -137,11 +137,11 @@
   <update id="updateByExampleSelective" parameterType="map" >
     update profession
     <set >
-      <if test="record.pid != null" >
-        pid = #{record.pid,jdbcType=VARCHAR},
+      <if test="record.professionId != null" >
+        profession_id = #{record.professionId,jdbcType=VARCHAR},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="record.professionName != null" >
+        profession_name = #{record.professionName,jdbcType=VARCHAR},
       </if>
       <if test="record.collegeId != null" >
         college_id = #{record.collegeId,jdbcType=VARCHAR},
@@ -153,8 +153,8 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update profession
-    set pid = #{record.pid,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=VARCHAR},
+    set profession_id = #{record.professionId,jdbcType=VARCHAR},
+      profession_name = #{record.professionName,jdbcType=VARCHAR},
       college_id = #{record.collegeId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -163,19 +163,19 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.huyang.dao.po.Profession" >
     update profession
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="professionName != null" >
+        profession_name = #{professionName,jdbcType=VARCHAR},
       </if>
       <if test="collegeId != null" >
         college_id = #{collegeId,jdbcType=VARCHAR},
       </if>
     </set>
-    where pid = #{pid,jdbcType=VARCHAR}
+    where profession_id = #{professionId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.huyang.dao.po.Profession" >
     update profession
-    set name = #{name,jdbcType=VARCHAR},
+    set profession_name = #{professionName,jdbcType=VARCHAR},
       college_id = #{collegeId,jdbcType=VARCHAR}
-    where pid = #{pid,jdbcType=VARCHAR}
+    where profession_id = #{professionId,jdbcType=VARCHAR}
   </update>
 </mapper>

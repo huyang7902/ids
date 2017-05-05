@@ -1,23 +1,23 @@
 package com.huyang.dao.po;
 
 public class College {
-    private String id;
+    private String collegeId;
 
-    private String name;
+    private String collegeName;
 
-    public String getId() {
-        return id;
+    public String getCollegeId() {
+        return collegeId;
     }
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setCollegeId(String collegeId) {
+        this.collegeId = collegeId == null ? null : collegeId.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getCollegeName() {
+        return collegeName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setCollegeName(String collegeName) {
+        this.collegeName = collegeName == null ? null : collegeName.trim();
     }
 }

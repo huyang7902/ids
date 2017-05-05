@@ -5,15 +5,19 @@ import java.util.Date;
 public class Exam {
     private String id;
 
-    private String name;
+    private String collegeId;
+
+    private String proId;
+
+    private String classId;
 
     private String courseId;
+
+    private String name;
 
     private String teacherId;
 
     private String classRoom;
-
-    private String proId;
 
     private Date startTime;
 
@@ -35,12 +39,28 @@ public class Exam {
         this.id = id == null ? null : id.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getCollegeId() {
+        return collegeId;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setCollegeId(String collegeId) {
+        this.collegeId = collegeId == null ? null : collegeId.trim();
+    }
+
+    public String getProId() {
+        return proId;
+    }
+
+    public void setProId(String proId) {
+        this.proId = proId == null ? null : proId.trim();
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId == null ? null : classId.trim();
     }
 
     public String getCourseId() {
@@ -49,6 +69,14 @@ public class Exam {
 
     public void setCourseId(String courseId) {
         this.courseId = courseId == null ? null : courseId.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getTeacherId() {
@@ -65,14 +93,6 @@ public class Exam {
 
     public void setClassRoom(String classRoom) {
         this.classRoom = classRoom == null ? null : classRoom.trim();
-    }
-
-    public String getProId() {
-        return proId;
-    }
-
-    public void setProId(String proId) {
-        this.proId = proId == null ? null : proId.trim();
     }
 
     public Date getStartTime() {

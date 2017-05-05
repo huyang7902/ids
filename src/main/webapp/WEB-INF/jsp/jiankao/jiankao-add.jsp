@@ -11,43 +11,69 @@
 	<article class="page-container">
 		<form action="${basePath}/jiankao/jiankao-admin.html?act=add"
 			method="post" class="form form-horizontal" id="form-exam-add">
+			<input id="professionId" name="professionId" hidden="true" value="${profession.professionId }"/>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>班级：</label>
+				<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>学院：</label>
 				<div class="formControls col-xs-8 col-sm-9">
-					<span class="select-box" style="width: 150px;"> <select class="select"
-						name="demo1">
-							<option value="" selected>默认select</option>
-							<option value="1">菜单一</option>
-							<option value="2">菜单二</option>
-							<option value="3">菜单三</option>
-					</select>
+					<input type="text" class="input-text" value="${college.collegeName }" placeholder="" id="college" name="collegeName"/>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>专业：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="${profession.professionName }" placeholder="" id="profession" name="professionName"/>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>年级：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<span class="select-box radius"  style="max-width: 600px;"> 
+						<select class="select" name="grade" id="grade" onchange="getClass()">
+							<option value="">请选择年级</option>
+							<c:forEach items="${gradeList }" var="grade">
+								<option value="${grade.grade }">${grade.grade }级</option>
+							</c:forEach>
+						</select>
 					</span>
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>课程名：</label>
+				<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>班级：</label>
 				<div class="formControls col-xs-8 col-sm-9">
-					<input type="text" class="input-text" value="" placeholder=""
-						id="username" name="username">
+					<span class="select-box radius"  style="max-width: 600px;"> 
+						<select class="select" name="className" id="className" onchange="getCourses()">
+							<option value="">请选择班级</option>
+						</select>
+					</span>
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>监考时间：</label>
+				<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>课程：</label>
 				<div class="formControls col-xs-8 col-sm-9">
-					<input type="text"
-						onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-{%d+1}'})"
-						id="datemin" class="input-text Wdate" style="width: 150px;">
+					<span class="select-box" style="max-width: 600px;"> 
+						<select class="select" name="coursesId" id="coursesId" onchange="getCourseDetail()">
+								<option value="" selected>请选择课程</option>
+						</select>
+					</span>
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>监考地点：</label>
+				<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>课程号：</label>
 				<div class="formControls col-xs-8 col-sm-9">
-					<input type="text" class="input-text" value="" placeholder=""
-						id="username" name="username">
+					<input type="text" class="input-text" value="" placeholder="" id="courseId" name="courseId">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>课序号：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder="" id="lessonNumber" name="lessonNumber">
 				</div>
 			</div>
 			<div class="row cl">
@@ -112,7 +138,7 @@
 					layer.alert(json.data);
 				}
 			});
-
+			
 			/* $("#form-exam-add").submit(function(){
 			       $.ajax({
 			           url:"${basePath}/jiankao/jiankao-admin.html?act=add",
@@ -174,6 +200,90 @@
 				}
 			}); */
 		});
+		
+		function getClass() {
+			var g = $("#grade").val();
+			var p = $("#professionId").val();
+			var class1 = {
+				grade:g,
+				professionId:p
+			};
+			var select = $("#className").html("");
+			var html;
+			select.append("<option value="+">请选择班级</option>");
+			$.ajax({
+				type : 'POST',
+				url : '${basePath}/jiankao/jiankao-list.html?act=getClass',
+				dataType : 'json',
+				data : class1,
+				success : function(data) {
+					$.each(data, function(i, n){
+						select.append("<option value=" + n.classId + ">" + n.className + "</option>");
+					});
+				},
+				error : function(data) {
+					console.log(data.msg);
+				},
+			});
+		}
+		
+		function getCourses() {
+			var g = $("#grade").val();
+			var p = $("#professionId").val();
+			var c = $("#className option:selected").val();
+			var class1 = {
+				grade:g,
+				professionId:p,
+				classId:c
+			};
+			var select = $("#coursesId").html("");
+			var html;
+			select.append("<option value="+">请选择课程</option>");
+			$.ajax({
+				type : 'POST',
+				url : '${basePath}/jiankao/jiankao-list.html?act=getCourses',
+				dataType : 'json',
+				data : class1,
+				success : function(data) {
+					$.each(data, function(i, n){
+						select.append("<option value=" + n.courseId + ">" + n.courseName + "</option>");
+					});
+				},
+				error : function(data) {
+					console.log(data.msg);
+				},
+			});
+		}
+		
+		function getCourseDetail() {
+			var g = $("#grade").val();
+			var p = $("#professionId").val();
+			var c = $("#className option:selected").val();
+			var coursesId = $("#coursesId option:selected").val();
+			var params = {
+				grade:g,
+				professionId:p,
+				classId:c,
+				courseId:coursesId
+			};
+			var courseId = $("#collegeId").html("");
+			courseId.append("<option value="+">请选择课程号</option>");
+			var lessonNumber = $("#lessonNumber").html("");
+			lessonNumber.append("<option value="+">请选择课序号</option>");
+			$.ajax({
+				type : 'POST',
+				url : '${basePath}/jiankao/jiankao-list.html?act=getCourseDetail',
+				dataType : 'json',
+				data : params,
+				success : function(data) {
+					$("#courseId").val(data.courseId);
+					$("#lessonNumber").val(data.lessonNumber);
+				},
+				error : function(data) {
+					console.log(data.msg);
+				},
+			});
+		}
 	</script>
 	<!--/请在上方写此页面业务相关的脚本-->
 </body>

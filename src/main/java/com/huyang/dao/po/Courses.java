@@ -3,11 +3,17 @@ package com.huyang.dao.po;
 import java.util.Date;
 
 public class Courses {
-    private String courseId;
+    private Long courseId;
 
     private String lessonNumber;
 
     private String collegeId;
+
+    private String proId;
+
+    private String classId;
+
+    private String grade;
 
     private String courseName;
 
@@ -17,7 +23,7 @@ public class Courses {
 
     private Date endTime;
 
-    private Boolean week;
+    private String week;
 
     private String time;
 
@@ -25,12 +31,12 @@ public class Courses {
 
     private Byte status;
 
-    public String getCourseId() {
+    public Long getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(String courseId) {
-        this.courseId = courseId == null ? null : courseId.trim();
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     public String getLessonNumber() {
@@ -47,6 +53,30 @@ public class Courses {
 
     public void setCollegeId(String collegeId) {
         this.collegeId = collegeId == null ? null : collegeId.trim();
+    }
+
+    public String getProId() {
+        return proId;
+    }
+
+    public void setProId(String proId) {
+        this.proId = proId == null ? null : proId.trim();
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId == null ? null : classId.trim();
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade == null ? null : grade.trim();
     }
 
     public String getCourseName() {
@@ -81,12 +111,12 @@ public class Courses {
         this.endTime = endTime;
     }
 
-    public Boolean getWeek() {
+    public String getWeek() {
         return week;
     }
 
-    public void setWeek(Boolean week) {
-        this.week = week;
+    public void setWeek(String week) {
+        this.week = week == null ? null : week.trim();
     }
 
     public String getTime() {
