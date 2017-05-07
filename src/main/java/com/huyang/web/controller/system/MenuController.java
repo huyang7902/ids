@@ -17,7 +17,7 @@ import com.alibaba.fastjson.JSON;
 import com.huyang.common.utils.DwzJsonUtil;
 import com.huyang.common.utils.RequestUtil;
 import com.huyang.dao.po.BackMenu;
-import com.huyang.service.system.SystemService;
+import com.huyang.service.SystemService;
 import com.huyang.web.Constants;
 
 /**

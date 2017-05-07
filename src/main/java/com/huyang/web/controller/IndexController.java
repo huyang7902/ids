@@ -17,7 +17,7 @@ import com.huyang.common.utils.JedisClient;
 import com.huyang.common.utils.JsonUtils;
 import com.huyang.dao.po.BackMenu;
 import com.huyang.dao.po.User;
-import com.huyang.service.system.SystemService;
+import com.huyang.service.SystemService;
 import com.huyang.web.Constants;
 
 /**
@@ -39,28 +39,38 @@ public class IndexController extends BaseController {
 	@Resource
 	private JedisClient jedisClient;
 
-	@RequestMapping({"/index","/"})
-    public String defaultIndex(HttpServletRequest request,
-                               HttpServletResponse response, Model model) {
+	@RequestMapping({ "/index", "/" })
+	public String defaultIndex(HttpServletRequest request, HttpServletResponse response,
+			Model model) {
 
-        User loginUser = getLoginUser(request);
+		User loginUser = getLoginUser(request);
 
-        List<BackMenu> menus = null;
+		List<BackMenu> menus = null;
 
-        /**
-         * 根据用户角色查询菜单
-         */
-        if(UserType.COMMON_ADMIN.equals(loginUser.getAccessRoleLevele().toString()) || UserType.SUPER_ADMIN.equals(loginUser.getAccessRoleLevele().toString())){
-            menus= systemService.selectAllBackMenusWithLevelRelation();
-            jedisClient.set(Constants.IDS_ADMIN_MENU,JsonUtils.objectToJson(menus));
-        }else{
-            menus= systemService.selectRoleBackMenusWithLevelRelation(loginUser);
-            jedisClient.set(Constants.IDS_USER_MENU,JsonUtils.objectToJson(menus));
-        }
+		/**
+		 * 根据用户角色查询菜单
+		 */
+		if (UserType.COMMON_ADMIN.equals(loginUser.getAccessRoleLevele().toString())
+				|| UserType.SUPER_ADMIN.equals(loginUser.getAccessRoleLevele().toString())) {
+			String menuJson = jedisClient.get(Constants.IDS_ADMIN_MENU);
+			if (menuJson == null) {
+				menus = systemService.selectAllBackMenusWithLevelRelation();
+				jedisClient.set(Constants.IDS_ADMIN_MENU, JsonUtils.objectToJson(menus));
+			} else {
+				menus = JsonUtils.jsonToList(menuJson, BackMenu.class);
+			}
+		} else {
+			String menuJson = jedisClient.get(Constants.IDS_USER_MENU);
+			if (menuJson == null) {
+				menus = systemService.selectRoleBackMenusWithLevelRelation(loginUser);
+				jedisClient.set(Constants.IDS_USER_MENU, JsonUtils.objectToJson(menus));
+			} else {
+				menus = JsonUtils.jsonToList(menuJson, BackMenu.class);
+			}
+		}
 
-
-        model.addAttribute("user",loginUser);
-        model.addAttribute("menus",menus);
-        return "index";
-    }
+		model.addAttribute("user", loginUser);
+		model.addAttribute("menus", menus);
+		return "index";
+	}
 }

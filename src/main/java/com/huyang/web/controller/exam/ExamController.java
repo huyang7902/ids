@@ -1,6 +1,10 @@
 package com.huyang.web.controller.exam;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,12 +16,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.huyang.common.utils.RequestUtil;
 import com.huyang.dao.po.Class;
 import com.huyang.dao.po.College;
 import com.huyang.dao.po.Courses;
+import com.huyang.dao.po.CoursesExt;
+import com.huyang.dao.po.Exam;
 import com.huyang.dao.po.Profession;
-import com.huyang.service.system.CollegeAndProfessionAndClassService;
+import com.huyang.dao.po.User;
+import com.huyang.service.CollegeAndProfessionAndClassService;
+import com.huyang.service.CommonExamService;
+import com.huyang.service.UserService;
+import com.huyang.web.controller.BaseController;
 
 /**
  * 监考页面控制类
@@ -30,32 +41,109 @@ import com.huyang.service.system.CollegeAndProfessionAndClassService;
  */
 @Controller
 @RequestMapping("/jiankao/jiankao-list.html")
-public class ExamController {
+public class ExamController extends BaseController {
 
 	@Autowired
 	private CollegeAndProfessionAndClassService collegeAndProfessionAndClassService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private CommonExamService commonExamService;
 
+	/**
+	 * 监考列表页面
+	 * 
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(params = "act=list")
-	public String jiankaoPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String jiankaoPage(HttpServletRequest request, HttpServletResponse response,
+			Model model) {
 
+		// 获取学院名
 		String collegeName = null;
+		// 获取专业名
 		String professionName = null;
 		try {
-			collegeName = new String(RequestUtil.getString(request, "college").getBytes("ISO-8859-1"), "UTF-8");
-			professionName = new String(RequestUtil.getString(request, "profession").getBytes("ISO-8859-1"), "UTF-8");
+			collegeName = new String(
+					RequestUtil.getString(request, "college").getBytes("ISO-8859-1"), "UTF-8");
+			professionName = new String(
+					RequestUtil.getString(request, "profession").getBytes("ISO-8859-1"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 
 		College college = collegeAndProfessionAndClassService.findCollegeByName(collegeName);
-		Profession profession = collegeAndProfessionAndClassService.findProfessionByName(professionName);
+		Profession profession = collegeAndProfessionAndClassService
+				.findProfessionByName(professionName);
 
 		List<Class> gradeList = collegeAndProfessionAndClassService
 				.findGradeByProfessionId(profession.getProfessionId());
 
+		// 查询监考列表
+		// 获取学院id
+		String collegeId = college.getCollegeId();
+		// 获取专业id
+		String proId = profession.getProfessionId();
+		// 获取年级
+		String grade = RequestUtil.getString(request, "grade");
+		// 获取班级
+		String classId = RequestUtil.getString(request, "classId");
+		// 获取日期范围
+		String startTime = RequestUtil.getString(request, "startTime");
+		String endTime = RequestUtil.getString(request, "endTime");
+		// 获取课程id
+		String courseId = RequestUtil.getString(request, "courseId");
+		Exam exam = new Exam();
+		exam.setCollegeId(collegeId);
+		exam.setProId(proId);
+		exam.setGrade(grade);
+		exam.setClassId(classId);
+		exam.setCourseId(courseId);
+
+		// 获取分页
+		Integer pageNum = RequestUtil.getInteger(request, "pageNum");
+		Integer pageSize = RequestUtil.getInteger(request, "pageSize");
+		// 查询
+		List<Exam> list = commonExamService.getListExam(exam, startTime, endTime, pageNum,
+				pageSize);
+
+		PageInfo<Exam> examList = new PageInfo<>(list);
+
+		// 取出监考人员
+		if (list != null) {
+
+			for (Exam exam2 : list) {
+
+				List<String> peopleList = new ArrayList<>();
+				if (exam2.getPeopleName() != null) {
+					String[] peopleName = exam2.getPeopleName().split("#");
+					for (String name : peopleName) {
+						peopleList.add(name);
+					}
+					if (exam2.getPeopleNum() != peopleList.size()) {
+						int peopleListNum = peopleList.size();
+						for (int i = 0; i < exam2.getPeopleNum() - peopleListNum; i++) {
+							peopleList.add("空缺");
+						}
+					}
+				} else {
+					for (int i = 0; i < exam2.getPeopleNum(); i++) {
+						peopleList.add("空缺");
+					}
+				}
+				exam2.setPeopleList(peopleList);
+			}
+		}
+
+		User loginUser = getLoginUser(request);
+		model.addAttribute("loginUser", loginUser);
 		model.addAttribute("college", college);
 		model.addAttribute("profession", profession);
 		model.addAttribute("gradeList", gradeList);
+		model.addAttribute("examList", examList);
 		return "jiankao/jiankao-list";
 	}
 
@@ -68,13 +156,16 @@ public class ExamController {
 	 * @return
 	 */
 	@RequestMapping(params = "act=add")
-	public String jiankaoAdd(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String jiankaoAdd(HttpServletRequest request, HttpServletResponse response,
+			Model model) {
 		String collegeId = RequestUtil.getString(request, "collegeId");
 		String professionId = RequestUtil.getString(request, "professionId");
 
 		College college = collegeAndProfessionAndClassService.findCollegeById(collegeId);
-		Profession profession = collegeAndProfessionAndClassService.findProfessionById(professionId);
-		List<Class> gradeList = collegeAndProfessionAndClassService.findGradeByProfessionId(professionId);
+		Profession profession = collegeAndProfessionAndClassService
+				.findProfessionById(professionId);
+		List<Class> gradeList = collegeAndProfessionAndClassService
+				.findGradeByProfessionId(professionId);
 
 		model.addAttribute("college", college);
 		model.addAttribute("profession", profession);
@@ -93,12 +184,15 @@ public class ExamController {
 	 */
 	@RequestMapping(params = "act=getClass")
 	@ResponseBody
-	public List<Class> ajaxFindClassByGrade(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public List<Class> ajaxFindClassByGrade(HttpServletRequest request,
+			HttpServletResponse response, Model model) {
 		String professionId = RequestUtil.getString(request, "professionId");
 		String grade = RequestUtil.getString(request, "grade");
-		List<Class> classList = collegeAndProfessionAndClassService.findClassByGradeAndProfessionId(professionId, grade);
+		List<Class> classList = collegeAndProfessionAndClassService
+				.findClassByGradeAndProfessionId(professionId, grade);
 		return classList;
 	}
+
 	/**
 	 * 根据年级，专业、班级查找课程
 	 * 
@@ -109,13 +203,16 @@ public class ExamController {
 	 */
 	@RequestMapping(params = "act=getCourses")
 	@ResponseBody
-	public List<Courses> ajaxFindCoursesByClass(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public List<Courses> ajaxFindCoursesByClass(HttpServletRequest request,
+			HttpServletResponse response, Model model) {
 		String professionId = RequestUtil.getString(request, "professionId");
 		String grade = RequestUtil.getString(request, "grade");
 		String ClassId = RequestUtil.getString(request, "classId");
-		List<Courses> coursesList = collegeAndProfessionAndClassService.findClassByGradeAndClassId(professionId, grade, ClassId);
+		List<Courses> coursesList = collegeAndProfessionAndClassService
+				.findClassByGradeAndClassId(professionId, grade, ClassId);
 		return coursesList;
 	}
+
 	/**
 	 * 根据年级，专业、班级查找课程
 	 * 
@@ -126,13 +223,21 @@ public class ExamController {
 	 */
 	@RequestMapping(params = "act=getCourseDetail")
 	@ResponseBody
-	public Courses ajaxFindCoursesDetail(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public CoursesExt ajaxFindCoursesDetail(HttpServletRequest request,
+			HttpServletResponse response, Model model) {
 		String professionId = RequestUtil.getString(request, "professionId");
 		String grade = RequestUtil.getString(request, "grade");
 		String ClassId = RequestUtil.getString(request, "classId");
-		Long courseId = RequestUtil.getLong(request, "courseId");
-		Courses course = collegeAndProfessionAndClassService.findCoursesDetail(professionId, grade, ClassId, courseId);
-		return course;
+		String coursesName = RequestUtil.getString(request, "coursesName");
+		Courses courses = collegeAndProfessionAndClassService.findCoursesDetail(professionId, grade,
+				ClassId, coursesName);
+		User user = userService.findUserById(courses.getUserId());
+		user.setPassword(null);
+		CoursesExt coursesExt = new CoursesExt();
+		coursesExt.setCourses(courses);
+		coursesExt.setUser(user);
+
+		return coursesExt;
 	}
 
 }

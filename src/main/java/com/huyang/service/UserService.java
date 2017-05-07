@@ -1,4 +1,4 @@
-package com.huyang.service.system;
+package com.huyang.service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,4 +26,11 @@ public interface UserService {
 	 * @return
 	 */
 	IdsResult UserLogin(User loginUser, HttpServletRequest request, HttpServletResponse response);
+	
+	/**
+	 * 根据用户id查找
+	 * @param uid
+	 * @return
+	 */
+	User findUserById(String uid);
 }

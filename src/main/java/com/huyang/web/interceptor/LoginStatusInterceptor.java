@@ -84,7 +84,7 @@ public class LoginStatusInterceptor extends HandlerInterceptorAdapter
 			return null;
 		} else {
 			logger.info("找到了用户redis信息，重新设置redis失效时间，{}，{}，{}"+ redisKey,JSON.toJSONString(json,true), USER_SESSION.expire);
-			JedisClient.expire(redisKey, USER_SESSION.expire);
+			JedisClient.expire(Constants.IDS_USER_TOKEN +":"+ redisKey, USER_SESSION.expire);
 		}
 		return JsonUtils.jsonToPojo(json, User.class);
 	}

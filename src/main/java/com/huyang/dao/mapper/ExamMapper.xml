@@ -5,11 +5,16 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="college_id" property="collegeId" jdbcType="VARCHAR" />
     <result column="pro_id" property="proId" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="VARCHAR" />
     <result column="class_id" property="classId" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
     <result column="course_id" property="courseId" jdbcType="VARCHAR" />
+    <result column="lesson_number" property="lessonNumber" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="teacher_id" property="teacherId" jdbcType="VARCHAR" />
     <result column="class_room" property="classRoom" jdbcType="VARCHAR" />
+    <result column="people_num" property="peopleNum" jdbcType="INTEGER" />
+    <result column="people_name" property="peopleName" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
     <result column="creat_people_id" property="creatPeopleId" jdbcType="VARCHAR" />
@@ -76,8 +81,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, college_id, pro_id, class_id, course_id, name, teacher_id, class_room, start_time, 
-    creat_time, creat_people_id, dead_time, status, remark
+    id, college_id, pro_id, grade, class_id, class_name, course_id, lesson_number, name, 
+    teacher_id, class_room, people_num, people_name, start_time, creat_time, creat_people_id, 
+    dead_time, status, remark
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huyang.dao.po.ExamExample" >
     select
@@ -111,15 +117,19 @@
   </delete>
   <insert id="insert" parameterType="com.huyang.dao.po.Exam" >
     insert into exam (id, college_id, pro_id, 
-      class_id, course_id, name, 
-      teacher_id, class_room, start_time, 
-      creat_time, creat_people_id, dead_time, 
-      status, remark)
+      grade, class_id, class_name, 
+      course_id, lesson_number, name, 
+      teacher_id, class_room, people_num, 
+      people_name, start_time, creat_time, 
+      creat_people_id, dead_time, status, 
+      remark)
     values (#{id,jdbcType=VARCHAR}, #{collegeId,jdbcType=VARCHAR}, #{proId,jdbcType=VARCHAR}, 
-      #{classId,jdbcType=VARCHAR}, #{courseId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{teacherId,jdbcType=VARCHAR}, #{classRoom,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{creatTime,jdbcType=TIMESTAMP}, #{creatPeopleId,jdbcType=VARCHAR}, #{deadTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR})
+      #{grade,jdbcType=VARCHAR}, #{classId,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, 
+      #{courseId,jdbcType=VARCHAR}, #{lessonNumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{teacherId,jdbcType=VARCHAR}, #{classRoom,jdbcType=VARCHAR}, #{peopleNum,jdbcType=INTEGER}, 
+      #{peopleName,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{creatTime,jdbcType=TIMESTAMP}, 
+      #{creatPeopleId,jdbcType=VARCHAR}, #{deadTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.huyang.dao.po.Exam" >
     insert into exam
@@ -133,11 +143,20 @@
       <if test="proId != null" >
         pro_id,
       </if>
+      <if test="grade != null" >
+        grade,
+      </if>
       <if test="classId != null" >
         class_id,
       </if>
+      <if test="className != null" >
+        class_name,
+      </if>
       <if test="courseId != null" >
         course_id,
+      </if>
+      <if test="lessonNumber != null" >
+        lesson_number,
       </if>
       <if test="name != null" >
         name,
@@ -147,6 +166,12 @@
       </if>
       <if test="classRoom != null" >
         class_room,
+      </if>
+      <if test="peopleNum != null" >
+        people_num,
+      </if>
+      <if test="peopleName != null" >
+        people_name,
       </if>
       <if test="startTime != null" >
         start_time,
@@ -177,11 +202,20 @@
       <if test="proId != null" >
         #{proId,jdbcType=VARCHAR},
       </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=VARCHAR},
+      </if>
       <if test="classId != null" >
         #{classId,jdbcType=VARCHAR},
       </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
       <if test="courseId != null" >
         #{courseId,jdbcType=VARCHAR},
+      </if>
+      <if test="lessonNumber != null" >
+        #{lessonNumber,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -191,6 +225,12 @@
       </if>
       <if test="classRoom != null" >
         #{classRoom,jdbcType=VARCHAR},
+      </if>
+      <if test="peopleNum != null" >
+        #{peopleNum,jdbcType=INTEGER},
+      </if>
+      <if test="peopleName != null" >
+        #{peopleName,jdbcType=VARCHAR},
       </if>
       <if test="startTime != null" >
         #{startTime,jdbcType=TIMESTAMP},
@@ -230,11 +270,20 @@
       <if test="record.proId != null" >
         pro_id = #{record.proId,jdbcType=VARCHAR},
       </if>
+      <if test="record.grade != null" >
+        grade = #{record.grade,jdbcType=VARCHAR},
+      </if>
       <if test="record.classId != null" >
         class_id = #{record.classId,jdbcType=VARCHAR},
       </if>
+      <if test="record.className != null" >
+        class_name = #{record.className,jdbcType=VARCHAR},
+      </if>
       <if test="record.courseId != null" >
         course_id = #{record.courseId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lessonNumber != null" >
+        lesson_number = #{record.lessonNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -244,6 +293,12 @@
       </if>
       <if test="record.classRoom != null" >
         class_room = #{record.classRoom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.peopleNum != null" >
+        people_num = #{record.peopleNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.peopleName != null" >
+        people_name = #{record.peopleName,jdbcType=VARCHAR},
       </if>
       <if test="record.startTime != null" >
         start_time = #{record.startTime,jdbcType=TIMESTAMP},
@@ -273,11 +328,16 @@
     set id = #{record.id,jdbcType=VARCHAR},
       college_id = #{record.collegeId,jdbcType=VARCHAR},
       pro_id = #{record.proId,jdbcType=VARCHAR},
+      grade = #{record.grade,jdbcType=VARCHAR},
       class_id = #{record.classId,jdbcType=VARCHAR},
+      class_name = #{record.className,jdbcType=VARCHAR},
       course_id = #{record.courseId,jdbcType=VARCHAR},
+      lesson_number = #{record.lessonNumber,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       teacher_id = #{record.teacherId,jdbcType=VARCHAR},
       class_room = #{record.classRoom,jdbcType=VARCHAR},
+      people_num = #{record.peopleNum,jdbcType=INTEGER},
+      people_name = #{record.peopleName,jdbcType=VARCHAR},
       start_time = #{record.startTime,jdbcType=TIMESTAMP},
       creat_time = #{record.creatTime,jdbcType=TIMESTAMP},
       creat_people_id = #{record.creatPeopleId,jdbcType=VARCHAR},
@@ -297,11 +357,20 @@
       <if test="proId != null" >
         pro_id = #{proId,jdbcType=VARCHAR},
       </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
       <if test="classId != null" >
         class_id = #{classId,jdbcType=VARCHAR},
       </if>
+      <if test="className != null" >
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
       <if test="courseId != null" >
         course_id = #{courseId,jdbcType=VARCHAR},
+      </if>
+      <if test="lessonNumber != null" >
+        lesson_number = #{lessonNumber,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -311,6 +380,12 @@
       </if>
       <if test="classRoom != null" >
         class_room = #{classRoom,jdbcType=VARCHAR},
+      </if>
+      <if test="peopleNum != null" >
+        people_num = #{peopleNum,jdbcType=INTEGER},
+      </if>
+      <if test="peopleName != null" >
+        people_name = #{peopleName,jdbcType=VARCHAR},
       </if>
       <if test="startTime != null" >
         start_time = #{startTime,jdbcType=TIMESTAMP},
@@ -337,11 +412,16 @@
     update exam
     set college_id = #{collegeId,jdbcType=VARCHAR},
       pro_id = #{proId,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=VARCHAR},
       class_id = #{classId,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
       course_id = #{courseId,jdbcType=VARCHAR},
+      lesson_number = #{lessonNumber,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       teacher_id = #{teacherId,jdbcType=VARCHAR},
       class_room = #{classRoom,jdbcType=VARCHAR},
+      people_num = #{peopleNum,jdbcType=INTEGER},
+      people_name = #{peopleName,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=TIMESTAMP},
       creat_time = #{creatTime,jdbcType=TIMESTAMP},
       creat_people_id = #{creatPeopleId,jdbcType=VARCHAR},

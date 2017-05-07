@@ -12,7 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.huyang.dao.mapper.BackMenuMapper;
 import com.huyang.dao.po.BackMenu;
 import com.huyang.dao.po.User;
-import com.huyang.service.system.SystemService;
+import com.huyang.service.SystemService;
 
 /**
  * @Project: ids-service

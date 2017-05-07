@@ -16,11 +16,12 @@ import com.huyang.dao.po.ClassExample;
 import com.huyang.dao.po.College;
 import com.huyang.dao.po.CollegeExample;
 import com.huyang.dao.po.CollegeExample.Criteria;
+import com.huyang.service.CollegeAndProfessionAndClassService;
 import com.huyang.dao.po.Courses;
 import com.huyang.dao.po.CoursesExample;
 import com.huyang.dao.po.Profession;
 import com.huyang.dao.po.ProfessionExample;
-import com.huyang.service.system.CollegeAndProfessionAndClassService;
+import com.huyang.dao.po.User;
 
 /**
  * 学院、专业、班级基本操作接口实现类
@@ -165,22 +166,38 @@ public class CollegeAndProfessionAndClassServiceImpl implements CollegeAndProfes
 	}
 
 	@Override
-	public Courses findCoursesDetail(String professionId, String grade, String classId, Long courseId) {
+	public Courses findCoursesDetail(String professionId, String grade, String classId, String courseName) {
 		CoursesExample example = new CoursesExample();
 		com.huyang.dao.po.CoursesExample.Criteria criteria = example.createCriteria();
 		criteria.andProIdEqualTo(professionId);
 		criteria.andGradeEqualTo(grade);
 		criteria.andClassIdEqualTo(classId);
-		criteria.andCourseIdEqualTo(courseId);
+		criteria.andCourseNameEqualTo(courseName);
 		List<Courses> list = coursesMapper.selectByExample(example);
 		
 		if (list == null || list.size() <1) {
-			logger.warn("professionId："+ professionId +", grade:" + grade +", classId: "+classId +", courseName:"+courseId+ "对应的课程详细信息没有找到");
+			logger.warn("professionId："+ professionId +", grade:" + grade +", classId: "+classId +", courseName:"+courseName+ "对应的课程详细信息没有找到");
 			return null;
 		}
 		Courses courseDetail = list.get(0);
 		return courseDetail;
 	}
+
+	@Override
+	public Class findClassByClassId(String classId) {
+		ClassExample example = new ClassExample();
+		com.huyang.dao.po.ClassExample.Criteria criteria = example.createCriteria();
+		criteria.andClassIdEqualTo(classId);
+		
+		List<Class> list = classMapper.selectByExample(example);
+		if (list == null || list.size() <1) {
+			logger.warn("classId："+ classId + "对应的课程详细信息没有找到");
+			return null;
+		}
+		Class class1 = list.get(0);
+		return class1;
+	}
+
 
 
 

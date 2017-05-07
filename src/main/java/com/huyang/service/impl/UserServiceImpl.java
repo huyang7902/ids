@@ -20,7 +20,7 @@ import com.huyang.dao.mapper.UserMapper;
 import com.huyang.dao.po.User;
 import com.huyang.dao.po.UserExample;
 import com.huyang.dao.po.UserExample.Criteria;
-import com.huyang.service.system.UserService;
+import com.huyang.service.UserService;
 import com.huyang.web.Constants;
 import com.huyang.web.controller.login.LoginController;
 
@@ -88,5 +88,11 @@ public class UserServiceImpl implements UserService {
 //		String md5DigestAsHex = DigestUtils.md5DigestAsHex("123".getBytes());
 //		System.out.println(md5DigestAsHex);
 //	}
+
+	@Override
+	public User findUserById(String uid) {
+		User user = userMapper.selectByPrimaryKey(uid);
+		return user;
+	}
 
 }

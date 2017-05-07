@@ -1,4 +1,4 @@
-package com.huyang.service.system;
+package com.huyang.service;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import com.huyang.dao.po.Class;
 import com.huyang.dao.po.College;
 import com.huyang.dao.po.Courses;
 import com.huyang.dao.po.Profession;
+import com.huyang.dao.po.User;
 
 /**
  * 学院、专业、班级基本操作接口
@@ -73,6 +74,14 @@ public interface CollegeAndProfessionAndClassService {
 	 * @return
 	 */
 	List<Class> findClassByprofessionId(String professionId);
+	/**
+	 * 根据班级id查找班级
+	 * 
+	 * @return
+	 */
+	Class findClassByClassId(String classId);
+	
+
 
 	/**
 	 * 根据专业id查找不重复的年级
@@ -102,7 +111,7 @@ public interface CollegeAndProfessionAndClassService {
 	List<Courses> findClassByGradeAndClassId(String professionId, String grade, String classId);
 
 	/**
-	 * 根据年级和专业和班级和课程名查找课程详细详细
+	 * 根据年级和专业和班级和课程名查找课程详细
 	 * 
 	 * @param professionId
 	 * @param grade
@@ -110,6 +119,6 @@ public interface CollegeAndProfessionAndClassService {
 	 * @param courseName
 	 * @return
 	 */
-	Courses findCoursesDetail(String professionId, String grade, String classId, Long courseId);
+	Courses findCoursesDetail(String professionId, String grade, String classId, String courseName);
 
 }
