@@ -26,11 +26,30 @@ public interface UserService {
 	 * @return
 	 */
 	IdsResult UserLogin(User loginUser, HttpServletRequest request, HttpServletResponse response);
-	
+
 	/**
 	 * 根据用户id查找
+	 * 
 	 * @param uid
 	 * @return
 	 */
 	User findUserById(String uid);
+
+	/**
+	 * 修改用户信息(邮箱、电话)
+	 * 
+	 * @param user
+	 * @return
+	 */
+	IdsResult upDateUser(User user, String token);
+
+	/**
+	 * 修改用户密码
+	 * 
+	 * @param loginUser
+	 * @param originPass
+	 * @param newPass
+	 * @return
+	 */
+	IdsResult resetPass(User loginUser, String originPass, String newPass);
 }

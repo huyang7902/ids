@@ -36,7 +36,7 @@ import com.huyang.web.controller.login.LoginController;
 @Service
 public class UserServiceImpl implements UserService {
 
-	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Autowired
 	private UserMapper userMapper;
@@ -93,6 +93,33 @@ public class UserServiceImpl implements UserService {
 	public User findUserById(String uid) {
 		User user = userMapper.selectByPrimaryKey(uid);
 		return user;
+	}
+
+	@Override
+	public IdsResult upDateUser(User user,String token) {
+		int i = userMapper.updateByPrimaryKey(user);
+		if (i != 1) {
+			return IdsResult.build(400, "更新信息失败！");
+		}
+		User newUser = userMapper.selectByPrimaryKey(user.getUid());
+		// 把用户信息写入redis
+		jedisClient.set(Constants.IDS_USER_TOKEN + ":" + token, JsonUtils.objectToJson(newUser));
+		return IdsResult.ok();
+	}
+
+	@Override
+	public IdsResult resetPass(User loginUser, String originPass, String newPass) {
+		User user = userMapper.selectByPrimaryKey(loginUser.getUid());
+		if (!DigestUtils.md5DigestAsHex(originPass.getBytes()).equals(user.getPassword())) {
+			logger.info("用户：" + loginUser.getUid() + "修改密码，原密码错误！");
+			return IdsResult.build(400, "原密码错误！");
+		}
+		loginUser.setPassword(DigestUtils.md5DigestAsHex(newPass.getBytes()));
+		int i = userMapper.updateByPrimaryKey(loginUser);
+		if (i != 1) {
+			return IdsResult.build(400, "修改密码失败！");
+		}
+		return IdsResult.ok();
 	}
 
 }

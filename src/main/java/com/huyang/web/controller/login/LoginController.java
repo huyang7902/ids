@@ -7,13 +7,16 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.huyang.common.utils.CookieUtils;
@@ -100,9 +103,65 @@ public class LoginController extends BaseController {
 		jedisClient.del(Constants.IDS_USER_TOKEN + ":" + key);
 		CookieUtils.deleteCookie(request, response, Constants.IDS_USER_TOKEN);
 		if (loginUser != null) {
-			logger.info("用户id：" +loginUser.getUid() + " 用户名：" + loginUser.getName()  + " ,登出成功！");
+			logger.info("用户id：" + loginUser.getUid() + " 用户名：" + loginUser.getName() + " ,登出成功！");
 		}
 		response.sendRedirect(request.getAttribute("basePath") + "/login/index.html");
 		return null;
+	}
+
+	/**
+	 * 修改用户信息
+	 * 
+	 * @param request
+	 * @param response
+	 * @param realName
+	 * @param phone
+	 * @return
+	 */
+	@RequestMapping("/saveInfo.html")
+	@ResponseBody
+	public IdsResult saveInfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(required = true) String email, @RequestParam(required = true) String tel) {
+
+		User loginUser = getLoginUser(request);
+		String token = CookieUtils.getCookieValue(request, Constants.IDS_USER_TOKEN);
+		loginUser.setTel(tel);
+		loginUser.setEmail(email);
+		IdsResult idsResult = userService.upDateUser(loginUser, token);
+		return idsResult;
+	}
+
+	/**
+	 * 修改用户密码
+	 * 
+	 * @param request
+	 * @param response
+	 * @param originPass
+	 * @param newPass
+	 * @param newPassConfirm
+	 * @return
+	 */
+	@RequestMapping("/resetPass.html")
+	public IdsResult resetPass(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(required = true) String originPass, @RequestParam(required = true) String newPass,
+			@RequestParam(required = true) String newPassConfirm) {
+
+
+		User loginUser = getLoginUser(request);
+		if (loginUser == null) {
+			return IdsResult.build(400, "请先登录");
+		}
+
+		if (StringUtils.isBlank(originPass) || StringUtils.isBlank(newPass) || StringUtils.isBlank(newPassConfirm)) {
+			return IdsResult.build(400, "输入不完整");
+		}
+
+		if (!newPass.equals(newPassConfirm)) {
+			return IdsResult.build(400, "两次密码输入不一致！");
+		}
+
+		IdsResult idsResult = userService.resetPass(loginUser,originPass, newPass);
+
+		return idsResult;
 	}
 }
