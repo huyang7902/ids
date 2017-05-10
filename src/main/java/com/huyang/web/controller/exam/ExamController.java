@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
 import com.huyang.common.utils.RequestUtil;
+import com.huyang.dao.mapper.ExamMapper;
 import com.huyang.dao.po.Class;
 import com.huyang.dao.po.College;
 import com.huyang.dao.po.Courses;
@@ -27,6 +29,7 @@ import com.huyang.dao.po.Profession;
 import com.huyang.dao.po.User;
 import com.huyang.service.CollegeAndProfessionAndClassService;
 import com.huyang.service.CommonExamService;
+import com.huyang.service.ExamAdminService;
 import com.huyang.service.UserService;
 import com.huyang.web.controller.BaseController;
 
@@ -49,6 +52,8 @@ public class ExamController extends BaseController {
 	private UserService userService;
 	@Autowired
 	private CommonExamService commonExamService;
+	@Autowired
+	private ExamAdminService examAdminService;
 
 	/**
 	 * 监考列表页面
@@ -94,14 +99,42 @@ public class ExamController extends BaseController {
 		// 获取日期范围
 		String startTime = RequestUtil.getString(request, "startTime");
 		String endTime = RequestUtil.getString(request, "endTime");
+		//获取课程名
+		String courseName = RequestUtil.getString(request, "courseName");
 		// 获取课程id
 		String courseId = RequestUtil.getString(request, "courseId");
 		Exam exam = new Exam();
-		exam.setCollegeId(collegeId);
-		exam.setProId(proId);
-		exam.setGrade(grade);
-		exam.setClassId(classId);
-		exam.setCourseId(courseId);
+		if (StringUtils.isBlank(collegeId)) {
+			exam.setCollegeId("");
+		}else {
+			exam.setCollegeId(collegeId);
+		}
+		if (StringUtils.isBlank(proId)) {
+			
+			exam.setProId("");
+		} else {
+			exam.setProId(proId);
+		}
+		if (StringUtils.isBlank(grade)) {
+			exam.setGrade("");
+		} else {
+			exam.setGrade(grade);
+		}
+		if (StringUtils.isBlank(classId)) {
+			exam.setClassId("");
+		} else {
+			exam.setClassId(classId);
+		}
+		if (StringUtils.isBlank(courseId)) {
+			exam.setCourseId("");
+		} else {
+			exam.setCourseId(courseId);
+		}
+		if (StringUtils.isBlank(courseName)) {
+			exam.setCourseId("");
+		} else {
+			exam.setCourseId(courseName);
+		}
 
 		// 获取分页
 		Integer pageNum = RequestUtil.getInteger(request, "pageNum");
@@ -118,7 +151,7 @@ public class ExamController extends BaseController {
 			for (Exam exam2 : list) {
 
 				List<String> peopleList = new ArrayList<>();
-				if (exam2.getPeopleName() != null) {
+				if (StringUtils.isNotBlank(exam2.getPeopleName())) {
 					String[] peopleName = exam2.getPeopleName().split("#");
 					for (String name : peopleName) {
 						peopleList.add(name);
@@ -148,7 +181,7 @@ public class ExamController extends BaseController {
 	}
 
 	/**
-	 * 添加监考
+	 * 跳转添加监考页面
 	 * 
 	 * @param request
 	 * @param response
@@ -173,6 +206,48 @@ public class ExamController extends BaseController {
 
 		return "jiankao/jiankao-add";
 	}
+	
+	@RequestMapping(params = "act=edit")
+	public String editExam(HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		String examId = RequestUtil.getString(request, "examId");
+		
+		Exam exam = examAdminService.editExamById(examId);
+		College college = collegeAndProfessionAndClassService.findCollegeById(exam.getCollegeId());
+		Profession profession = collegeAndProfessionAndClassService.findProfessionById(exam.getProId());
+		Class class1 = collegeAndProfessionAndClassService.findClassByClassId(exam.getClassId());
+		User teacher = userService.findUserById(exam.getTeacherId());
+		List<String> peopleList = new ArrayList<>();
+		
+		if (StringUtils.isNotBlank(exam.getPeopleName())) {
+			String[] peopleName = exam.getPeopleName().split("#");
+			for (String name : peopleName) {
+				peopleList.add(name);
+			}
+			if (exam.getPeopleNum() != peopleList.size()) {
+				int peopleListNum = peopleList.size();
+				for (int i = 0; i < exam.getPeopleNum() - peopleListNum; i++) {
+					peopleList.add("空缺");
+				}
+			}
+		} else {
+			for (int i = 0; i < exam.getPeopleNum(); i++) {
+				peopleList.add("空缺");
+			}
+		}
+		exam.setPeopleList(peopleList);
+		
+		model.addAttribute("exam", exam);
+		model.addAttribute("college", college);
+		model.addAttribute("profession", profession);
+		model.addAttribute("class1", class1);
+		model.addAttribute("teacher", teacher);
+		model.addAttribute("peopleList", peopleList);
+		
+		return "jiankao/jiankao-edit";
+	}
+	
+	
 
 	/**
 	 * 根据年级，专业查找班级
@@ -239,5 +314,5 @@ public class ExamController extends BaseController {
 
 		return coursesExt;
 	}
-
+	
 }

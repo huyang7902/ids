@@ -2,11 +2,14 @@ package com.huyang.web.controller.exam;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.huyang.common.utils.IdsResult;
 import com.huyang.common.utils.RequestUtil;
 import com.huyang.dao.po.Class;
+import com.huyang.dao.po.College;
 import com.huyang.dao.po.Exam;
+import com.huyang.dao.po.Profession;
+import com.huyang.dao.po.User;
 import com.huyang.service.CollegeAndProfessionAndClassService;
 import com.huyang.service.ExamAdminService;
+import com.huyang.service.UserService;
 import com.huyang.web.Constants;
 import com.huyang.web.controller.BaseController;
 import com.huyang.web.controller.login.LoginController;
@@ -44,10 +51,12 @@ public class ExamAdminController extends BaseController {
 
 	@Autowired
 	private ExamAdminService examAdminService;
-	
+
 	@Autowired
 	private CollegeAndProfessionAndClassService collegeAndProfessionAndClassService;
-	
+	@Autowired
+	private UserService userService;
+
 	/**
 	 * 添加监考类
 	 * 
@@ -59,6 +68,7 @@ public class ExamAdminController extends BaseController {
 	@RequestMapping(params = "act=add")
 	@ResponseBody
 	public IdsResult add(HttpServletRequest request, HttpServletResponse response, Model model) {
+
 		String collegeId = RequestUtil.getString(request, "collegeId");
 		String proId = RequestUtil.getString(request, "proId");
 		String grade = RequestUtil.getString(request, "grade");
@@ -84,7 +94,7 @@ public class ExamAdminController extends BaseController {
 		exam.setTeacherId(teacherId);
 		exam.setClassRoom(classRoom);
 		exam.setPeopleNum(peopleNum);
-		//查询班级名
+		// 查询班级名
 		Class findClassById = collegeAndProfessionAndClassService.findClassById(classId);
 		exam.setClassName(findClassById.getClassName());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -104,4 +114,92 @@ public class ExamAdminController extends BaseController {
 		return idsResult;
 	}
 
+	@RequestMapping(params = "act=update")
+	@ResponseBody
+	public IdsResult editExam(HttpServletRequest request, HttpServletResponse response, Model model) {
+		String id = RequestUtil.getString(request, "id");
+		String collegeId = RequestUtil.getString(request, "collegeId");
+		String proId = RequestUtil.getString(request, "proId");
+		String grade = RequestUtil.getString(request, "grade");
+		String className = RequestUtil.getString(request, "className");
+		String classId = RequestUtil.getString(request, "classId");
+		String courseId = RequestUtil.getString(request, "courseId");
+		String lessonNumber = RequestUtil.getString(request, "lessonNumber");
+		String name = RequestUtil.getString(request, "name");
+		String teacherId = RequestUtil.getString(request, "teacherId");
+		String classRoom = RequestUtil.getString(request, "classRoom");
+		Integer peopleNum = RequestUtil.getInteger(request, "peopleNum");
+
+		String startTime = RequestUtil.getString(request, "startTime");
+		String deadTime = RequestUtil.getString(request, "deadTime");
+		String remark = RequestUtil.getString(request, "remark");
+
+		// 处理人员名字
+		String[] peopleNames = request.getParameterValues("peopleName");
+		StringBuffer sb = new StringBuffer();
+		ArrayList<String> list = new ArrayList<>();
+
+		for (int i = 0; i < peopleNames.length; i++) {
+			if (StringUtils.isNotBlank(peopleNames[i]) && !"空缺".equals(peopleNames[i])) {
+				list.add(peopleNames[i]);
+			}
+		}
+
+		for (int i = 0; i < list.size(); i++) {
+			sb.append(list.get(i));
+			if (i != list.size() - 1) {
+				sb.append("#");
+			}
+		}
+
+		Exam newExam = new Exam();
+		newExam.setId(id);
+		newExam.setCollegeId(collegeId);
+		newExam.setProId(proId);
+		newExam.setGrade(grade);
+		newExam.setClassId(classId);
+		newExam.setClassName(className);
+		newExam.setCourseId(courseId);
+		newExam.setLessonNumber(lessonNumber);
+		newExam.setName(name);
+		newExam.setTeacherId(teacherId);
+		newExam.setClassRoom(classRoom);
+		newExam.setPeopleNum(peopleNum);
+		newExam.setPeopleName(sb.toString());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		try {
+			newExam.setStartTime(sdf.parse(startTime));
+			newExam.setDeadTime(sdf.parse(deadTime));
+		} catch (ParseException e) {
+			// e.printStackTrace();
+			return IdsResult.build(400, "日期格式不正确");
+		}
+		newExam.setCreatTime(new Date());
+		newExam.setCreatPeopleId(getLoginUser(request).getUid());
+		newExam.setStatus(EXAM_STATUS_1);
+		newExam.setRemark(remark);
+
+		// 更新监考
+		IdsResult idsResult = examAdminService.upDateExam(newExam);
+
+		return idsResult;
+	}
+
+	/**
+	 * 删除监考
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(params = "act=delete")
+	@ResponseBody
+	public IdsResult deleteExam(HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		String id = RequestUtil.getString(request, "id");
+		
+		IdsResult idsResult = examAdminService.deleteExamById(id);
+		return idsResult;
+	}
+		
 }

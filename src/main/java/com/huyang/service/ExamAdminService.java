@@ -21,4 +21,24 @@ public interface ExamAdminService {
 	 * @return
 	 */
 	IdsResult addExam(Exam exam);
+
+	/**
+	 * 编辑监考(回显数据)
+	 * 
+	 * @param exam
+	 * @return
+	 */
+	Exam editExamById(String examId);
+
+	/**
+	 * 更新监考数据
+	 */
+	IdsResult upDateExam(Exam newExam);
+
+	/**
+	 * 根据id删除监考
+	 * 
+	 * @param id
+	 */
+	IdsResult deleteExamById(String id);
 }

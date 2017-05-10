@@ -37,4 +37,28 @@ public class ExamAdminServiceImpl implements ExamAdminService {
 		return IdsResult.ok("添加成功！");
 	}
 
+	@Override
+	public Exam editExamById(String examId) {
+		Exam exam = examMapper.selectByPrimaryKey(examId);
+		return exam;
+	}
+
+	@Override
+	public IdsResult upDateExam(Exam newExam) {
+		int i = examMapper.updateByPrimaryKey(newExam);
+		if (i != 1) {
+			return IdsResult.build(400, "更新失败！");
+		}
+		return IdsResult.build(200, "更新成功！请重新打开此页面");
+	}
+
+	@Override
+	public IdsResult deleteExamById(String id) {
+		int i = examMapper.deleteByPrimaryKey(id);
+		if (i != 1) {
+			return IdsResult.build(400, "删除监考失败！");
+		}
+		return IdsResult.build(200, "删除成功！请重新打开此页面");
+	}
+
 }

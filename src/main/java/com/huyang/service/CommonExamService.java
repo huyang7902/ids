@@ -25,4 +25,5 @@ public interface CommonExamService {
 	 * @return
 	 */
 	List<Exam> getListExam(Exam exam,String startTime, String endTime, Integer pageNum, Integer pageSize);
+	
 }

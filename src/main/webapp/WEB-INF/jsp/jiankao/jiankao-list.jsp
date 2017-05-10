@@ -18,30 +18,43 @@
 			class="Hui-iconfont">&#xe68f;</i></a>
 	</nav>
 	<div class="page-container">
+	<form action="${basePath}/jiankao/jiankao-list.html?act=list" method="post">
 		<div class="text-c">
+			<input type="hidden" name="college" value="${param.college}" />
+			<input type="hidden" name="profession" value="${param.profession}" />
+			<input type="hidden" name="paramClassName"  />
 			<input id="professionId" name="professionId" hidden="true" value="${profession.professionId }"/>
 			选择年级： <select class="input-text" style="width: 130px;" name="grade" id="grade" onchange="getClass()">
+			<c:set var="numberAsString">${param.grade }</c:set>
+			<c:if test="${numberAsString.matches('[0-9]+')}">
+					<option value="${param.grade }">${param.grade }级</option>
+				</c:if> 
 				<option value="">---选择年级---</option>
-				<!-- 循环遍历班级 -->
+				
+				<!-- 循环遍历年级 -->
 				<c:forEach items="${gradeList }" var="grade">
 					<option value="${grade.grade }">${grade.grade }级</option>
 				</c:forEach>
-			</select> 选择班级： <select class="input-text"
-				style="max-width: 150px;" name="classId" id="className">
+			</select>
+			<c:set var="paramclassId">${param.classId }</c:set>
+			
+			选择班级： <select class="input-text"
+				style="max-width: 150px;" name="classId" id="className" onchange="changeClassNameText()">
+				<c:if test="${not empty param.paramClassName}">
+					<option value="${param.classId }">${param.paramClassName }</option>
+				</c:if> 
 				<option value="">---选择班级---</option>
-			</select> 日期范围： <input type="text"
-				onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')}' })"
-				id="startTime" class="input-text Wdate" style="width: 120px;">
-			- <input type="text"
-				onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}'})"
-				id="endTime" class="input-text Wdate" style="width: 120px;">
-			<input type="text" class="input-text" style="width: 250px"
-				placeholder="输入课程名称" id="course" name="">
-			<button type="submit" class="btn btn-success" onclick="search()"
-				id="" name="">
+			</select> 
+			日期范围： 
+			<input type="text" value="${param.startTime }" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-{%d+1}'})" id="startTime" name="startTime" class="input-text Wdate" style="width: 120px;">
+			- <input type="text" value="${param.endTime }" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-{%d+1}'})" id="endTime" name="endTime" class="input-text Wdate" style="width: 120px;">
+			<input type="text" class="input-text" style="width: 250px" placeholder="输入课程名称" id="course" name="courseName" value="${param.courseName }">
+			<button type="submit" class="btn btn-success" 
+				id="" name="search">
 				<i class="Hui-iconfont">&#xe665;</i> 搜索
 			</button>
 		</div>
+		</form>
 
 		<c:if test="${loginUser.accessRoleLevele == 3 }" >
 			<div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -61,6 +74,7 @@
 					<tr class="text-c">
 						<th width="25"><input type="checkbox" name="" value=""></th>
 						<th width="110">ID</th>
+						<th width="30">年级</th>
 						<th width="100">班级名</th>
 						<th width="150">课程名</th>
 						<th width="70">监考时间</th>
@@ -78,7 +92,8 @@
 					<c:forEach items="${examList.list }" var="exam">
 						<tr class="text-c">
 							<td><input type="checkbox" value="1" name=""></td>
-							<td>${exam.id }</td>
+							<td >${exam.id }</td>
+							<td>${exam.grade }</td>
 							<td>${exam.className }</td>
 							<td>${exam.name }</td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
@@ -99,15 +114,15 @@
 							<c:forEach items="${exam.peopleList }"
 									var="people">
 									<input class="btn btn-success radius size-MINI" type="button"
-										onclick="choose(1)" value="${people }"> &nbsp; &nbsp; 
+										onclick="chooseExam(this,${exam.id},'${loginUser.name }')" value="${people }"> &nbsp; &nbsp;
 							</c:forEach>
 							</td>
 							<c:if test="${loginUser.accessRoleLevele == 3}">
 								<td class="td-manage"><a title="编辑" href="javascript:;"
-									onclick="jiankao_edit('编辑','jiankao-add_admin','4','','510')"
+									onclick="jiankao_edit('编辑','jiankao-list.html?act=edit&examId=${exam.id }','4','','510')"
 									class="ml-5" style="text-decoration: none"><i
 										class="Hui-iconfont">&#xe6df;</i></a> <a title="删除"
-									href="javascript:;" onclick="jiankao_del(this,'1')" class="ml-5"
+									href="javascript:;" onclick="jiankao_del(this,${exam.id})" class="ml-5"
 									style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a>
 								</td>
 						</c:if>
@@ -128,6 +143,8 @@
 				<input type="hidden" name="classId" value="${param.classId}" />
 				<input type="hidden" name="startTime" value="${param.startTime}" />
 				<input type="hidden" name="endTime" value="${param.endTime}" />
+				<input type="hidden" name="courseName" value="${param.courseName}" />
+				<input type="hidden" name="paramClassName"  />
 
 				<div class="dataTables_paginate paginate"
 					data-page_num="${examList.pageNum}"
@@ -141,8 +158,7 @@
 	<!--/_footer 作为公共模版分离出去-->
 
 	<!--请在下方写此页面业务相关的脚本-->
-	<script type="text/javascript"
-		src="${resourcesPath}/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+	<script type="text/javascript" src="${resourcesPath}/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <%-- 	<script type="text/javascript" src="${resourcesPath}/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="${resourcesPath}/lib/laypage/1.2/laypage.js"></script> --%>
 	<script type="text/javascript">
@@ -150,19 +166,27 @@
 
 	/*-----------------------------------------------------------------*/
 		$(function() {
-			$('.table-sort').dataTable({
+			/* $('.table-sort').dataTable({
 				"aaSorting" : [ [ 1, "desc" ] ],//默认第几个排序
 				"bStateSave" : true,//状态保存
 				"aoColumnDefs" : [
 				//{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
 				{
 					"orderable" : false,
-					"aTargets" : [ 0, 8 ]
+					"aTargets" : [ 0, 10 ]
 				} // 制定列不参与排序
 				]
-			});
-
+			}); */
+			
+			
+			getClassAndclassName();
 		});
+	
+	function changeClassNameText() {
+		var checkText=$("#className").find("option:selected").text(); //获取Select选择的Text
+		alert(checkText);
+		$("input[name='paramClassName']").val(checkText);
+	}
 	
 		function getClass() {
 			var g = $("#grade").val();
@@ -191,6 +215,71 @@
 				},
 			});
 		}
+		function getClassAndclassName() {
+			var checkText=$("#className").find("option:selected").text(); //获取Select选择的Text
+			var paramClassId = $("#className").val();
+			var g = $("#grade").val();
+			var p = $("#professionId").val();
+			var class1 = {
+				grade:g,
+				professionId:p
+			};
+			var select = $("#className").html("");
+			select.append("<option value=" + paramClassId + ">" + checkText + "</option>");
+			var html;
+			select.append("<option value="+">---选择班级---</option>");
+			$.ajax({
+				type : 'POST',
+				url : '${basePath}/jiankao/jiankao-list.html?act=getClass',
+				dataType : 'json',
+				data : class1,
+				success : function(data) {
+					$.each(data, function(i, n){
+						select.append("<option value=" + n.classId + ">" + n.className + "</option>");
+					});
+					//select.append(html);
+					
+							},
+				error : function(data) {
+					console.log(data.msg);
+				},
+			});
+		}
+		
+		/*选择课程*/
+		function chooseExam(button,examId,userName) {
+			var loginUser = ${loginUser.name};
+			if($(button).val() != loginUser) {
+				alert("您已经选择该门监考，请选择其他带有\"空缺\"的按钮");
+				return false;
+			}
+			if($(button).val() != "空缺") {
+				alert("该监考已经有人选择了，请选择其他带有\"空缺\"的按钮");
+				return false;
+			}
+			
+			
+			$.ajax({
+				type : 'POST',
+				url : '${basePath}/jiankao/jiankao-user.html?act=choose',
+				dataType : 'json',
+				data : {
+					id:examId
+				},
+				success : function(data) {
+					if(data.status == 200){
+						alert(data.msg);
+						$(button).val(userName);
+					}else {
+						alert(data.msg);
+					}
+							},
+				error : function(data) {
+					alert(data.msg);
+				},
+			});
+		}
+		
 	
 		/*用户-添加*/
 		function jiankao_add(title, url, w, h) {
@@ -273,26 +362,26 @@
 		function jiankao_edit(title, url, id, w, h) {
 			layer_show(title, url, w, h);
 		}
-		/*密码-修改*/
-		function change_password(title, url, id, w, h) {
-			layer_show(title, url, w, h);
-		}
+		
 		/*用户-删除*/
 		function jiankao_del(obj, id) {
 			layer.confirm('确认要删除吗？', function(index) {
 				$.ajax({
 					type : 'POST',
-					url : '',
+					url : '${basePath}/jiankao/jiankao-admin.html?act=delete',
 					dataType : 'json',
+					data:{
+						id:id
+					},
 					success : function(data) {
 						$(obj).parents("tr").remove();
-						layer.msg('已删除!', {
+						layer.msg(data.msg, {
 							icon : 1,
 							time : 1000
 						});
 					},
 					error : function(data) {
-						console.log(data.msg);
+						alert(data.msg);
 					},
 				});
 			});

@@ -1,26 +1,21 @@
 package com.huyang.service.impl;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.huyang.dao.mapper.ExamMapper;
 import com.huyang.dao.po.Exam;
 import com.huyang.dao.po.ExamExample;
 import com.huyang.dao.po.ExamExample.Criteria;
 import com.huyang.service.CommonExamService;
-import com.huyang.service.ExamAdminService;
-import com.huyang.web.controller.exam.ExamAdminController;
 
 /**
  * 监考通用实现类
@@ -45,17 +40,20 @@ public class CommonExamServiceImpl implements CommonExamService {
 		Criteria criteria = example.createCriteria();
 		criteria.andCollegeIdEqualTo(exam.getCollegeId());
 		criteria.andProIdEqualTo(exam.getProId());
-		if (exam.getGrade() != null) {
+		if (!StringUtils.isBlank(exam.getGrade())) {
 			criteria.andGradeEqualTo(exam.getGrade());
 		}
-		if (exam.getClassId() != null) {
+		if (!StringUtils.isBlank(exam.getClassId())) {
 			criteria.andClassIdEqualTo(exam.getClassId());
 		}
-		if (exam.getClassId() != null) {
+		if (!StringUtils.isBlank(exam.getClassId())) {
 			criteria.andClassIdEqualTo(exam.getClassId());
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		if (startTime !=null && startTime != null) {
+		if (!StringUtils.isBlank(exam.getName())) {
+			criteria.andNameLike(exam.getName());
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		if (!StringUtils.isBlank(startTime) && !StringUtils.isBlank(endTime)) {
 			try {
 				criteria.andStartTimeBetween(sdf.parse(startTime), sdf.parse(endTime));
 			} catch (ParseException e) {
@@ -63,15 +61,16 @@ public class CommonExamServiceImpl implements CommonExamService {
 				logger.warn("时间转换失败");
 				return null;
 			}
-		}else if (startTime !=null && startTime ==null) {
+		}else if (!StringUtils.isBlank(startTime) && StringUtils.isBlank(endTime)) {
 				try {
+					System.out.println(sdf.parse(startTime));
 					criteria.andStartTimeGreaterThanOrEqualTo(sdf.parse(startTime));
 				} catch (ParseException e) {
 					e.printStackTrace();
 					logger.warn("时间转换失败");
 					return null;
 				}
-		}else if (startTime ==null && startTime !=null) {
+		}else if (StringUtils.isBlank(startTime) && !StringUtils.isBlank(endTime)) {
 			try {
 				criteria.andStartTimeLessThanOrEqualTo(sdf.parse(endTime));
 			} catch (ParseException e) {
@@ -83,7 +82,7 @@ public class CommonExamServiceImpl implements CommonExamService {
 		pageNum = pageNum == null || pageNum < 1 ? 1 : pageNum;
         pageSize = pageSize == null || pageSize < 1 ? 2 : pageSize;
         PageHelper.startPage(pageNum, pageSize);
-		
+		example.setOrderByClause("start_time");
 		List<Exam> examList = examMapper.selectByExample(example);
 		return examList;
 	}
