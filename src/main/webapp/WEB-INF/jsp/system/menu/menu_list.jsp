@@ -81,14 +81,16 @@
                                         datatype="*,n" nullmsg="没有选择可见性" errormsg="可见性必须是数字！" style="height: 20px;">
                                   <option value="0">0</option>
                                   <option value="1">1</option>
-                                  <option value="2" selected>2</option>
+                                  <option value="2" >2</option>
+                                  <option value="3" >3</option>
                                 </select>
                             </span><br>
                             <span style="color: #7e7e80">
                                 可见性分为0,1,2三级，逐级降低；<br>
-                                0级：仅超级管理员可用；<br>
-                                1级：1级及以上角色可用；<br>
-                                2级：全部角色可用<br>
+                                0级：普通用户可用；<br>
+                                1级：1级及以上角色可用（未使用）；<br>
+                                2级：全部角色可用（未使用）<br>
+                                3级：仅超级管理员可用<br>
                             </span>
                         </div>
                     </div>

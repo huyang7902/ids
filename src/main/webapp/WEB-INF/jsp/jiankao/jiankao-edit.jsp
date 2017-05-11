@@ -93,6 +93,16 @@
 				</div>
 			</div>
 			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"> <span
+					class="c-red">*</span>监考状态(1为正在进行，0为已完成)：
+				</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="${exam.status }" datatype="n"
+						nullmsg="监考状态不能为空" placeholder="" id="status" errormsg="只能为0或1"
+						name="status" >
+				</div>
+			</div>
+			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
 					class="c-red">*</span>监考人员：</label>
 				<div class="formControls col-xs-8 col-sm-9">

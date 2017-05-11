@@ -6,25 +6,32 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface ExamMapper {
-    int countByExample(ExamExample example);
+	int countByExample(ExamExample example);
 
-    int deleteByExample(ExamExample example);
+	int deleteByExample(ExamExample example);
 
-    int deleteByPrimaryKey(String id);
+	int deleteByPrimaryKey(String id);
 
-    int insert(Exam record);
+	int insert(Exam record);
 
-    int insertSelective(Exam record);
+	int insertSelective(Exam record);
 
-    List<Exam> selectByExample(ExamExample example);
+	List<Exam> selectByExample(ExamExample example);
 
-    Exam selectByPrimaryKey(String id);
+	Exam selectByPrimaryKey(String id);
 
-    int updateByExampleSelective(@Param("record") Exam record, @Param("example") ExamExample example);
+	int updateByExampleSelective(@Param("record") Exam record, @Param("example") ExamExample example);
 
-    int updateByExample(@Param("record") Exam record, @Param("example") ExamExample example);
+	int updateByExample(@Param("record") Exam record, @Param("example") ExamExample example);
 
-    int updateByPrimaryKeySelective(Exam record);
+	int updateByPrimaryKeySelective(Exam record);
 
-    int updateByPrimaryKey(Exam record);
+	int updateByPrimaryKey(Exam record);
+
+	/**
+	 * 定时任务
+	 * 
+	 * @return
+	 */
+	List<String> selectAllExamPeopleName();
 }

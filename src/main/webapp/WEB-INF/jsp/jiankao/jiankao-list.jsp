@@ -107,7 +107,7 @@
 										<span class="label label-success radius">已启用</span>
 									</c:when>
 									<c:when test="${exam.status == 0}">
-										<span class="label label-success radius">已结束</span>
+										<span class="label label-danger radius">已结束</span>
 									</c:when>
 								</c:choose></td>
 							<td class="td-manage">
@@ -118,12 +118,18 @@
 							</c:forEach>
 							</td>
 							<c:if test="${loginUser.accessRoleLevele == 3}">
-								<td class="td-manage"><a title="编辑" href="javascript:;"
-									onclick="jiankao_edit('编辑','jiankao-list.html?act=edit&examId=${exam.id }','4','','510')"
-									class="ml-5" style="text-decoration: none"><i
-										class="Hui-iconfont">&#xe6df;</i></a> <a title="删除"
-									href="javascript:;" onclick="jiankao_del(this,${exam.id})" class="ml-5"
-									style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+								<td class="td-manage">
+									<a title="自动安排" href="javascript:;"
+										onclick="jiankao_auto(this,${exam.id})"
+										class="ml-5" style="text-decoration: none"><i
+											class="Hui-iconfont">&#xe603;</i></a> 
+									<a title="编辑" href="javascript:;"
+										onclick="jiankao_edit('编辑','jiankao-list.html?act=edit&examId=${exam.id }','4','','510')"
+										class="ml-5" style="text-decoration: none"><i
+											class="Hui-iconfont">&#xe6df;</i></a> 
+									<a title="删除"
+										href="javascript:;" onclick="jiankao_del(this,${exam.id})" class="ml-5"
+										style="text-decoration: none"><i class="Hui-iconfont">&#xe6e2;</i></a>
 								</td>
 						</c:if>
 						</tr>
@@ -248,8 +254,8 @@
 		
 		/*选择课程*/
 		function chooseExam(button,examId,userName) {
-			var loginUser = ${loginUser.name};
-			if($(button).val() != loginUser) {
+			var loginUser = "${loginUser.name}";
+			if($(button).val() == loginUser) {
 				alert("您已经选择该门监考，请选择其他带有\"空缺\"的按钮");
 				return false;
 			}
@@ -285,85 +291,13 @@
 		function jiankao_add(title, url, w, h) {
 			layer_show(title, url, w, h);
 		}
-		/*用户-查看*/
-		function jiankao_show(title, url, id, w, h) {
-			layer_show(title, url, w, h);
-		}
-		/*用户-停用*/
-		function jiankao_stop(obj, id) {
-			layer
-					.confirm(
-							'确认要停用吗？',
-							function(index) {
-								$
-										.ajax({
-											type : 'POST',
-											url : '',
-											dataType : 'json',
-											success : function(data) {
-												$(obj)
-														.parents("tr")
-														.find(".td-manage")
-														.prepend(
-																'<a style="text-decoration:none" onClick="jiankao_start(this,id)" href="javascript:;" title="启用">_$tag___________________&#xe6e1;_$ta_$ta');
-												$(obj)
-														.parents("tr")
-														.find(".td-status")
-														.html(
-																'_$tag____________________________________已停用_$tag__');
-												$(obj).remove();
-												layer.msg('已停用!', {
-													icon : 5,
-													time : 1000
-												});
-											},
-											error : function(data) {
-												console.log(data.msg);
-											},
-										});
-							});
-		}
 
-		/*用户-启用*/
-		function jiankao_start(obj, id) {
-			layer
-					.confirm(
-							'确认要启用吗？',
-							function(index) {
-								$
-										.ajax({
-											type : 'POST',
-											url : '',
-											dataType : 'json',
-											success : function(data) {
-												$(obj)
-														.parents("tr")
-														.find(".td-manage")
-														.prepend(
-																'<a style="text-decoration:none" onClick="jiankao_stop(this,id)" href="javascript:;" title="停用">_$tag___________________&#xe631;_$ta_$ta');
-												$(obj)
-														.parents("tr")
-														.find(".td-status")
-														.html(
-																'_$tag____________________________________已启用_$tag__');
-												$(obj).remove();
-												layer.msg('已启用!', {
-													icon : 6,
-													time : 1000
-												});
-											},
-											error : function(data) {
-												console.log(data.msg);
-											},
-										});
-							});
-		}
 		/*用户-编辑*/
 		function jiankao_edit(title, url, id, w, h) {
 			layer_show(title, url, w, h);
 		}
 		
-		/*用户-删除*/
+		/*删除*/
 		function jiankao_del(obj, id) {
 			layer.confirm('确认要删除吗？', function(index) {
 				$.ajax({
@@ -377,8 +311,32 @@
 						$(obj).parents("tr").remove();
 						layer.msg(data.msg, {
 							icon : 1,
-							time : 1000
+							time : 2000
 						});
+					},
+					error : function(data) {
+						alert(data.msg);
+					},
+				});
+			});
+		}
+		
+		function jiankao_auto(obj, id) {
+			layer.confirm('确认要自动安排吗？', function(index) {
+				$.ajax({
+					type : 'POST',
+					url : '${basePath}/jiankao/jiankao-admin.html?act=auto',
+					dataType : 'json',
+					data:{
+						id:id
+					},
+					success : function(data) {
+						layer.msg(data.msg, {
+							icon : 1,
+							time : 2000
+						});
+						if(data.data != null)
+						alert(data.data);
 					},
 					error : function(data) {
 						alert(data.msg);

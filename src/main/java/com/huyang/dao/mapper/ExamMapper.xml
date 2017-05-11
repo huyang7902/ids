@@ -105,6 +105,11 @@
     from exam
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  <select id="selectAllExamPeopleName" resultType="String"  >
+    select people_name
+    from exam
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from exam
     where id = #{id,jdbcType=VARCHAR}

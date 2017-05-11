@@ -128,6 +128,7 @@ public class ExamAdminController extends BaseController {
 		String name = RequestUtil.getString(request, "name");
 		String teacherId = RequestUtil.getString(request, "teacherId");
 		String classRoom = RequestUtil.getString(request, "classRoom");
+		String status = RequestUtil.getString(request, "status");
 		Integer peopleNum = RequestUtil.getInteger(request, "peopleNum");
 
 		String startTime = RequestUtil.getString(request, "startTime");
@@ -164,6 +165,7 @@ public class ExamAdminController extends BaseController {
 		newExam.setName(name);
 		newExam.setTeacherId(teacherId);
 		newExam.setClassRoom(classRoom);
+		newExam.setStatus(Byte.valueOf(status));
 		newExam.setPeopleNum(peopleNum);
 		newExam.setPeopleName(sb.toString());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -199,6 +201,23 @@ public class ExamAdminController extends BaseController {
 		String id = RequestUtil.getString(request, "id");
 		
 		IdsResult idsResult = examAdminService.deleteExamById(id);
+		return idsResult;
+	}
+	
+	/**
+	 * 删除监考
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(params = "act=auto")
+	@ResponseBody
+	public IdsResult autoExam(HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		String id = RequestUtil.getString(request, "id");
+		
+		IdsResult idsResult = examAdminService.autoExamById(id);
 		return idsResult;
 	}
 		

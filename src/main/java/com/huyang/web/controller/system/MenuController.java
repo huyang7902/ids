@@ -15,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.huyang.common.utils.DwzJsonUtil;
+import com.huyang.common.utils.JedisClient;
+import com.huyang.common.utils.JsonUtils;
 import com.huyang.common.utils.RequestUtil;
 import com.huyang.dao.po.BackMenu;
 import com.huyang.service.SystemService;
@@ -35,6 +37,8 @@ public class MenuController {
 
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private JedisClient jedisClient;
 
 	@RequestMapping(params = "act=list")
 	public String listSystemMenus(@RequestParam(defaultValue = "") String college,
@@ -94,6 +98,9 @@ public class MenuController {
 		} else {
 			systemService.updateBackMenu(menu);
 		}
+		List<BackMenu> menus = systemService.selectAllBackMenusWithLevelRelation();
+		jedisClient.set(Constants.IDS_ADMIN_MENU, JsonUtils.objectToJson(menus));
+		
 		return new ModelAndView(Constants.JSON_VIEW, Constants.JSON_ROOT, DwzJsonUtil.getOkStatusMsg("保存成功！"));
 	}
 

@@ -41,4 +41,12 @@ public interface ExamAdminService {
 	 * @param id
 	 */
 	IdsResult deleteExamById(String id);
+
+	/**
+	 * 根据id自动分配监考人员
+	 * 
+	 * @param id
+	 * @return
+	 */
+	IdsResult autoExamById(String id);
 }

@@ -204,4 +204,16 @@ public class Exam {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	@Override
+	public String toString() {
+		return "Exam [id=" + id + ", collegeId=" + collegeId + ", proId=" + proId + ", grade=" + grade + ", classId="
+				+ classId + ", className=" + className + ", courseId=" + courseId + ", lessonNumber=" + lessonNumber
+				+ ", name=" + name + ", teacherId=" + teacherId + ", classRoom=" + classRoom + ", peopleNum="
+				+ peopleNum + ", peopleName=" + peopleName + ", startTime=" + startTime + ", creatTime=" + creatTime
+				+ ", creatPeopleId=" + creatPeopleId + ", deadTime=" + deadTime + ", status=" + status + ", remark="
+				+ remark + ", peopleList=" + peopleList + "]";
+	}
+    
+    
 }

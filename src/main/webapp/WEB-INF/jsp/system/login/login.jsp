@@ -93,7 +93,10 @@
 			</form>
 		</div>
 	</div>
-	<div class="footer">Copyright IDS by HuYang</div>
+	<div class="footer">Copyright IDS by HuYang  &nbsp;&nbsp;
+	<a href="http://www.miitbeian.gov.cn/">鄂ICP备17000312号</a>
+	</div>
+	<div><a href="http://www.miitbeian.gov.cn/">鄂ICP备17000312号</a></div>
 <script type="text/javascript" src="${resourcesPath}/lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="${resourcesPath}/static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="${resourcesPath}/js/Validform_v5.3.2.js"></script>
