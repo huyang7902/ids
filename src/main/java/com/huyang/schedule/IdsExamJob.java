@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+import com.huyang.common.utils.IdsResult;
 import com.huyang.common.utils.MapUtils;
 import com.huyang.dao.mapper.ExamMapper;
 import com.huyang.dao.mapper.UserMapper;
@@ -100,7 +101,7 @@ public class IdsExamJob extends QuartzJobBean {
 
 		// 定义一个list，判断监考人员是否重复
 		List<String> list = new ArrayList<>();
-		
+
 		// 循环遍历要排序的监考
 		for (Exam exam : examList) {
 			// 取出监考人员
@@ -125,7 +126,7 @@ public class IdsExamJob extends QuartzJobBean {
 					}
 				}
 				for (String people : list) {
-					peopleNames +=( "#" + people);
+					peopleNames += ("#" + people);
 				}
 			} else {
 				// 为空
@@ -145,15 +146,36 @@ public class IdsExamJob extends QuartzJobBean {
 				for (String people : list) {
 					if (StringUtils.isBlank(peopleNames)) {
 						peopleNames += people;
-					}else {
-						peopleNames +=( "#" + people);
+					} else {
+						peopleNames += ("#" + people);
 					}
 				}
 			}
 			exam.setStatus((byte) 0);
 			exam.setPeopleName(peopleNames);
 			examMapper.updateByPrimaryKey(exam);
-			logger.info("监考：" + exam.getId() + "完成自动分配！");
+
+			StringBuffer sb = new StringBuffer();
+			// 发送短信
+			for (String peopleName : list) {
+				UserExample example1 = new UserExample();
+				com.huyang.dao.po.UserExample.Criteria criteria1 = example1.createCriteria();
+				criteria1.andNameEqualTo(peopleName);
+				List<User> selectByExample = userMapper.selectByExample(example1);
+				if (selectByExample != null && selectByExample.size() > 0) {
+					User user = selectByExample.get(0);
+					IdsResult idsResult = MessageService.sendMessage(exam, user);
+					if (idsResult.getStatus() == 400) {
+						sb.append(user.getName() + " ");
+					}
+				}
+			}
+			logger.info("监考：" + exam.getId() + "完成手动选择自动分配！");
+			String data;
+			if (!StringUtils.isBlank(sb)) {
+				data = sb.append("发送短信失败！").toString();
+				logger.warn(data);
+			}
 		}
 	}
 }

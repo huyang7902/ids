@@ -1,6 +1,7 @@
 package com.huyang.schedule;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.huyang.dao.mapper.UserMapper;
 import com.huyang.dao.po.Exam;
 import com.huyang.dao.po.User;
 import com.huyang.service.impl.ExamAdminServiceImpl;
+import com.mysql.fabric.xmlrpc.base.Data;
 
 public class MessageService {
 	
@@ -39,16 +41,17 @@ public class MessageService {
 		Map<String, String> param = new HashMap<>();
 		param.put("name", user.getName());
 		param.put("examId", exam.getId());
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-		param.put("time", sdf.format(exam.getStartTime()));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		param.put("date", sdf.format(exam.getStartTime()));
+		SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm");
+		param.put("time", sdf1.format(exam.getStartTime()));
 		param.put("examName", exam.getName());
-		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd");
-		param.put("time", sdf2.format(exam.getStartTime()));
+		param.put("date", sdf.format(exam.getStartTime()));
 		String paramString = JSON.toJSONString(param);
 		querys.put("ParamString", paramString );
 		querys.put("RecNum", user.getTel());
 		querys.put("SignName", "监考系统");
-		querys.put("TemplateCode", "SMS_66675235");
+		querys.put("TemplateCode", "SMS_66880223");
 
 		try {
 			/**
@@ -64,8 +67,8 @@ public class MessageService {
 			String params = EntityUtils.toString(response.getEntity());
 			//HttpParams params = response.getParams();
 			String result = params.toString();
-			Map<String, String> resultMap = JSON.parseObject(result, Map.class);
-			if (!"true".equals(resultMap.get("success"))) {
+			Map<String, Boolean> resultMap = JSON.parseObject(result, Map.class);
+			if (!resultMap.get("success")) {
 				logger.warn("用户名为：" + user.getName() + "发送短信失败！");
 				return IdsResult.build(400, "发送短信失败！");
 			}
@@ -79,4 +82,8 @@ public class MessageService {
 			return IdsResult.build(400, "发送短信失败！");
 		}
 	}
+	/*public static void main(String[] args) {
+		SimpleDateFormat simpleDateFormat  = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		System.out.println(simpleDateFormat.format(new Date()));
+	}*/
 }

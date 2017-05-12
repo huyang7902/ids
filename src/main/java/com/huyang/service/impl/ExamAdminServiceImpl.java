@@ -209,7 +209,7 @@ public class ExamAdminServiceImpl implements ExamAdminService {
 		if (!StringUtils.isBlank(sb)) {
 			data = sb.append("发送短信失败！").toString();
 		}else{
-			data = null;
+			data = "短信发送成功！";
 		}
 		return IdsResult.build(200, "自动分配成功，请刷新本页面！", data);
 	}
