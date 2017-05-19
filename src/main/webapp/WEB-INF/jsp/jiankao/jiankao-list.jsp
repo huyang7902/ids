@@ -48,7 +48,7 @@
 			日期范围： 
 			<input type="text" value="${param.startTime }" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-{%d+1}'})" id="startTime" name="startTime" class="input-text Wdate" style="width: 120px;">
 			- <input type="text" value="${param.endTime }" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-{%d+1}'})" id="endTime" name="endTime" class="input-text Wdate" style="width: 120px;">
-			<input type="text" class="input-text" style="width: 250px" placeholder="输入课程名称" id="course" name="courseName" value="${param.courseName }">
+			<input type="text" class="input-text" style="width: 250px" placeholder="输入课程名称" id="course" name="name" value="${param.name }">
 			<button type="submit" class="btn btn-success" 
 				id="" name="search">
 				<i class="Hui-iconfont">&#xe665;</i> 搜索
@@ -58,9 +58,7 @@
 
 		<c:if test="${loginUser.accessRoleLevele == 3 }" >
 			<div class="cl pd-5 bg-1 bk-gray mt-20">
-				<span class="l"><a href="javascript:;" onclick="datadel()"
-					class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i>
-						批量删除</a> <a href="javascript:;"
+				<span class="l"> <a href="javascript:;"
 					onclick="jiankao_add('添加用户','jiankao-list.html?act=add&collegeId=${college.collegeId}&professionId=${profession.professionId }','','500')"
 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
 						添加监考</a></span>
@@ -73,15 +71,15 @@
 				<thead>
 					<tr class="text-c">
 						<th width="25"><input type="checkbox" name="" value=""></th>
-						<th width="110">ID</th>
+						<th width="100">ID</th>
 						<th width="30">年级</th>
 						<th width="100">班级名</th>
-						<th width="150">课程名</th>
-						<th width="70">监考时间</th>
-						<th width="70">选择截止时间</th>
-						<th width="90">监考地点</th>
+						<th width="140">课程名</th>
+						<th width="75">监考时间</th>
+						<th width="75">选择截止时间</th>
+						<th width="80">监考地点</th>
 						<th width="100">监考人员要求</th>
-						<th width="70">是否已启用</th>
+						<th width="60">是否已启用</th>
 						<th width="150">选择教师</th>
 						<c:if test="${loginUser.accessRoleLevele == 3 }">
 						<th width="75">操作</th>
@@ -95,7 +93,7 @@
 							<td >${exam.id }</td>
 							<td>${exam.grade }</td>
 							<td>${exam.className }</td>
-							<td>${exam.name }</td>
+							<td>${exam.name }(${exam.teacherName })</td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
 									value="${exam.startTime }" /></td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
@@ -149,7 +147,7 @@
 				<input type="hidden" name="classId" value="${param.classId}" />
 				<input type="hidden" name="startTime" value="${param.startTime}" />
 				<input type="hidden" name="endTime" value="${param.endTime}" />
-				<input type="hidden" name="courseName" value="${param.courseName}" />
+				<input type="hidden" name="name" value="${param.name}" />
 				<input type="hidden" name="paramClassName"  />
 
 				<div class="dataTables_paginate paginate"
@@ -190,7 +188,6 @@
 	
 	function changeClassNameText() {
 		var checkText=$("#className").find("option:selected").text(); //获取Select选择的Text
-		alert(checkText);
 		$("input[name='paramClassName']").val(checkText);
 	}
 	

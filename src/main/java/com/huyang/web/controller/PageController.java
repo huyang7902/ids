@@ -17,22 +17,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class PageController {
 
-/*	*//**
-	 * 主页跳转
+	/**
+	 * 欢迎页跳转
 	 * @return
-	 *//*
-	@RequestMapping("/")
+	 */
+	/*@RequestMapping("/welcome")
 	public String index(){
 		return "index";
-	}
+	}*/
 	
 	@RequestMapping("/{page}")
-	public String showPage(@PathVariable String page, @RequestParam(defaultValue="") String college,@RequestParam(defaultValue="") String major,Model model){
-		model.addAttribute("college", college);
-		model.addAttribute("major", major);
-		System.out.println(college);
-		System.out.println(page);
-		System.out.println(major);
-		return "admin/"+page;
-	}*/
+	public String showPage(@PathVariable String page){
+		return page;
+	}
 }

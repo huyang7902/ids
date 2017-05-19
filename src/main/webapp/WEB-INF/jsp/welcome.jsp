@@ -2,57 +2,19 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="renderer" content="webkit|ie-comp|ie-stand">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<!--[if lt IE 9]>
-<script type="text/javascript" src="lib/html5shiv.js"></script>
-<script type="text/javascript" src="lib/respond.min.js"></script>
-<![endif]-->
-<link rel="stylesheet" type="text/css"
-	href="static/h-ui/css/H-ui.min.css" />
-<link rel="stylesheet" type="text/css"
-	href="static/h-ui.admin/css/H-ui.admin.css" />
-<link rel="stylesheet" type="text/css"
-	href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-<link rel="stylesheet" type="text/css"
-	href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css"
-	href="static/h-ui.admin/css/style.css" />
-<link rel="stylesheet" type="text/css"
-	href="lib/layer/2.4/skin/layer.css" />
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
-<title>公告首页</title>
-<style type="text/css">
-.gonggao {
-	clear: both;
-	border-bottom: #dad0bc dashed 1px; padding : 4px;
-	height: 25px;
-	padding: 4px;
-}
-</style>
-</head>
+<jsp:include page="/WEB-INF/jsp/common/_header.jsp">
+	<jsp:param name="title" value="监考添加" />
+</jsp:include>
 <body>
 	<div class="page-container">
 		<p class="f-20 text-success">
-			欢迎使用监考教师人员分配系统 <span class="f-14">管理员界面</span>
+			欢迎使用监考教师人员分配系统 <span class="f-14"></span>
 		</p>
 
 
-		<div class="page-container">
+		<!-- <div class="page-container">
 			<table class="table table-border table-hover table-bg ">
 				<tbody id="gonggao">
-					<!-- <tr>
-						<td class="mt-20"><a href="">计科院：物联网工程 面向对象程序设计期中考试</a></td>
-						<td class="mt-5">发布时间：2016-06-01 9:00</td>
-					</tr>
 					<tr>
 						<td class="mt-20"><a href="">计科院：物联网工程 面向对象程序设计期中考试</a></td>
 						<td class="mt-5">发布时间：2016-06-01 9:00</td>
@@ -64,11 +26,15 @@
 					<tr>
 						<td class="mt-20"><a href="">计科院：物联网工程 面向对象程序设计期中考试</a></td>
 						<td class="mt-5">发布时间：2016-06-01 9:00</td>
-					</tr> -->
+					</tr>
+					<tr>
+						<td class="mt-20"><a href="">计科院：物联网工程 面向对象程序设计期中考试</a></td>
+						<td class="mt-5">发布时间：2016-06-01 9:00</td>
+					</tr>
 				</tbody>
 			</table>
 			<div id="biuuu_city" style="position: static; float: right; margin-top: 20px"  ></div>
-		</div>
+		</div> -->
 		
 
 
@@ -77,23 +43,16 @@
 	<footer class="footer mt-20" style="position: fixed;bottom: 0px">
 		<div class="container">
 			<p>
-				感谢jQuery、layer、laypage、Validform、UEditor、My97DatePicker、iconfont、Datatables、WebUploaded、icheck、highcharts、bootstrap-Switch<br>
-				Copyright &copy;2015-2017 H-ui.admin v3.0 All Rights Reserved.<br>
-				本后台系统由<a href="http://www.h-ui.net/" target="_blank"
-					title="H-ui前端框架">H-ui前端框架</a>提供前端技术支持
 			</p>
 		</div>
 	</footer>
 	<!--_footer 作为公共模版分离出去-->
-	<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
-	<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
-	<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
-	<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+	<jsp:include page="/WEB-INF/jsp/common/_footer.jsp" />
 	<!--/_footer 作为公共模版分离出去-->
 
 	<script type="text/javascript"
-		src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+		src="${resourcesPath}/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="${resourcesPath}/lib/laypage/1.2/laypage.js"></script>
 	
 	<script type="text/javascript">
 	//测试数据

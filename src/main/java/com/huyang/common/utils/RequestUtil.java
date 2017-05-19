@@ -1,6 +1,3 @@
-/**
- * $Id: RequestUtil.java,v 1.13 2012/08/27 03:42:33 jiayu.qiu Exp $
- */
 package com.huyang.common.utils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +8,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * @author jiayu.qiu@downjoy.com
+ * RequestUtil工具类
+ *
+ * @Project ids
+ * @package com.huyang.common.utils
+ * @author HuYang 790247179@qq.com
+ * @date 2017年5月19日 下午8:18:21
+ * @version V1.0 Copyright (c) 2017
  */
 public class RequestUtil {
 

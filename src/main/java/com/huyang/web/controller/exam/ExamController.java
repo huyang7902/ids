@@ -100,7 +100,7 @@ public class ExamController extends BaseController {
 		String startTime = RequestUtil.getString(request, "startTime");
 		String endTime = RequestUtil.getString(request, "endTime");
 		//获取课程名
-		String courseName = RequestUtil.getString(request, "courseName");
+		String name = RequestUtil.getString(request, "name");
 		// 获取课程id
 		String courseId = RequestUtil.getString(request, "courseId");
 		Exam exam = new Exam();
@@ -130,10 +130,10 @@ public class ExamController extends BaseController {
 		} else {
 			exam.setCourseId(courseId);
 		}
-		if (StringUtils.isBlank(courseName)) {
+		if (StringUtils.isBlank(name)) {
 			exam.setCourseId("");
 		} else {
-			exam.setCourseId(courseName);
+			exam.setName(name);
 		}
 
 		// 获取分页
@@ -153,8 +153,8 @@ public class ExamController extends BaseController {
 				List<String> peopleList = new ArrayList<>();
 				if (StringUtils.isNotBlank(exam2.getPeopleName())) {
 					String[] peopleName = exam2.getPeopleName().split("#");
-					for (String name : peopleName) {
-						peopleList.add(name);
+					for (String name1 : peopleName) {
+						peopleList.add(name1);
 					}
 					if (exam2.getPeopleNum() != peopleList.size()) {
 						int peopleListNum = peopleList.size();
@@ -168,8 +168,14 @@ public class ExamController extends BaseController {
 					}
 				}
 				exam2.setPeopleList(peopleList);
+				
+				User teacher = userService.findUserById(exam2.getTeacherId());
+				exam2.setTeacherName(teacher.getName());
 			}
+			
+			
 		}
+		
 
 		User loginUser = getLoginUser(request);
 		model.addAttribute("loginUser", loginUser);

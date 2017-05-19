@@ -1,6 +1,3 @@
-/**
- * $Id: JSONView.java,v 1.8 2012/08/16 11:16:27 jiayu.qiu Exp $
- */
 package com.huyang.web.view;
 
 import java.io.IOException;
@@ -16,9 +13,7 @@ import org.springframework.web.servlet.view.AbstractView;
 import com.alibaba.fastjson.JSON;
 import com.huyang.web.Constants;
 
-/**
- * @author zhangbo@downjoy.com
- */
+
 public class JSONView extends AbstractView implements Constants {
 
     private static final String jsonContentType="application/json; charset=UTF-8";

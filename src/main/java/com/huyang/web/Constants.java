@@ -29,11 +29,6 @@ public interface Constants {
 
 	int HTTP_OK_STATUS = 200;
 
-	/**
-	 * 清除缓存key
-	 */
-	String CLEAN_CACHE_PUBLICK_KEY = "_clean_sdk_cache_666_CodE";
-	String CLEAN_CACHE_SECURITY_KEY = "ASj%osoueq0918*@Kns";
 
 	String CHARSET_CODE = "UTF-8";
 

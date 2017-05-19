@@ -1,10 +1,13 @@
 package com.huyang.web;
 
 /**
- * 类/接口注释
+ *  redis
  *
- * @author haiqing.shi@downjoy.com
- * @DATE 2017-02-14 11:10
+ * @Project ids
+ * @package com.huyang.web
+ * @author HuYang 790247179@qq.com
+ * @date 2017年5月19日 下午8:19:26
+ * @version V1.0 Copyright (c) 2017
  */
 public interface RedisKey {
 

@@ -43,9 +43,22 @@ public class Exam {
     private String remark;
     
     /**额外字段*/
-    private List<String> peopleList;
+    private String teacherName;
+    
 
-    public List<String> getPeopleList() {
+	private List<String> peopleList;
+
+	
+	
+    public String getTeacherName() {
+		return teacherName;
+	}
+
+	public void setTeacherName(String teacherName) {
+		this.teacherName = teacherName;
+	}
+
+	public List<String> getPeopleList() {
 		return peopleList;
 	}
 

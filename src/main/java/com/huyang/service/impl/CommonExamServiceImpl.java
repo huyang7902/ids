@@ -50,7 +50,7 @@ public class CommonExamServiceImpl implements CommonExamService {
 			criteria.andClassIdEqualTo(exam.getClassId());
 		}
 		if (!StringUtils.isBlank(exam.getName())) {
-			criteria.andNameLike(exam.getName());
+			criteria.andNameLike("%" + exam.getName() + "%");
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		if (!StringUtils.isBlank(startTime) && !StringUtils.isBlank(endTime)) {
@@ -80,7 +80,7 @@ public class CommonExamServiceImpl implements CommonExamService {
 			}
 	}
 		pageNum = pageNum == null || pageNum < 1 ? 1 : pageNum;
-        pageSize = pageSize == null || pageSize < 1 ? 2 : pageSize;
+        pageSize = pageSize == null || pageSize < 1 ? 4 : pageSize;
         PageHelper.startPage(pageNum, pageSize);
 		example.setOrderByClause("start_time");
 		List<Exam> examList = examMapper.selectByExample(example);
