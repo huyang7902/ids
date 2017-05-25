@@ -54,9 +54,11 @@
 			</div>
 		</form>
 	</div>
+	
 	<div id="changePassword" class="modal fade" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		<form action="${basePath}/login/resetPass.html" id="resetPass" method="post">
+		<form action="${basePath}/login/resetPass.html" method="post" 
+		class="changePassword" data-after_success="refresh">
 			<div class="modal-dialog">
 				<div class="modal-content radius">
 					<div class="modal-header">
@@ -256,8 +258,8 @@
 			$(".errorTip").text("");
 			$('#changePassword').modal("show");
 		}
-		$("#resetPass").Validform();
-		$("#resetPass").ajaxForm(function(data) {
+		$(".changePassword").Validform();
+		$(".changePassword").ajaxForm(function(data) {
 			var json = $.parseJSON(data);
 			if (json.status == 200) {
 				layer.alert("修改密码成功！");

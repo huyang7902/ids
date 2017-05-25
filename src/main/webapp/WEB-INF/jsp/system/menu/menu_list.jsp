@@ -183,6 +183,7 @@
 <script type="text/javascript">
     function modal2() {
         $("#modal2 input[type!='submit']").val("");
+        $("#url").val("/jiankao/jiankao-list.html?act=list");
         $(".errorTip").text("");
         $("#modal2").modal("show");
     }

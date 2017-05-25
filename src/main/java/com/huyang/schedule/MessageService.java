@@ -19,6 +19,11 @@ import com.huyang.dao.po.Exam;
 import com.huyang.dao.po.User;
 import com.huyang.service.impl.ExamAdminServiceImpl;
 import com.mysql.fabric.xmlrpc.base.Data;
+import com.taobao.api.ApiException;
+import com.taobao.api.DefaultTaobaoClient;
+import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
+import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
 
 public class MessageService {
 	
@@ -82,6 +87,41 @@ public class MessageService {
 			return IdsResult.build(400, "发送短信失败！");
 		}
 	}
+	
+	/*public static IdsResult sendMessage(Exam exam, User user) {
+		TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", "23864235",
+				"6562ffe70c95552068aaa587ec621d7f");
+		AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
+		req.setExtend("");
+		req.setSmsType("normal");
+		req.setSmsFreeSignName("监考系统");
+		req.setSmsParamString(
+				"{name:'张三',examId:'56045710302202',date:'2017/05/01',time:'17:55',examName:'操作系统',date:'2017/05/01'}");
+		req.setRecNum("18109076230");
+		req.setSmsTemplateCode("SMS_68085171");
+		AlibabaAliqinFcSmsNumSendResponse rsp = null;
+		// 组装短信通知参数
+		Map<String, String> param = new HashMap<>();
+		param.put("name", user.getName());
+		param.put("examId", exam.getId());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		param.put("date", sdf.format(exam.getStartTime()));
+		SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm");
+		param.put("time", sdf1.format(exam.getStartTime()));
+		param.put("examName", exam.getName());
+		param.put("date", sdf.format(exam.getStartTime()));
+		String paramString = JSON.toJSONString(param);
+		rsp.setParams(param);
+		try {
+			rsp = client.execute(req);
+		} catch (ApiException e) {
+			logger.warn("姓名："+user.getName()+"; 电话：" + user.getTel()+"; 短信发送异常");
+		}
+		
+		System.out.println(rsp.getBody());
+		return IdsResult.build(200, "发送短信成功！");
+	}*/
+	
 	/*public static void main(String[] args) {
 		SimpleDateFormat simpleDateFormat  = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		System.out.println(simpleDateFormat.format(new Date()));

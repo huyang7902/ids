@@ -102,6 +102,7 @@ public class UserServiceImpl implements UserService {
 			return IdsResult.build(400, "更新信息失败！");
 		}
 		User newUser = userMapper.selectByPrimaryKey(user.getUid());
+		newUser.setPassword(null);
 		// 把用户信息写入redis
 		jedisClient.set(Constants.IDS_USER_TOKEN + ":" + token, JsonUtils.objectToJson(newUser));
 		return IdsResult.ok();

@@ -6,7 +6,7 @@
 <!DOCTYPE HTML>
 <html>
 <jsp:include page="/WEB-INF/jsp/common/_header.jsp">
-	<jsp:param name="title" value="监考添加" />
+	<jsp:param name="title" value="监考编辑" />
 </jsp:include>
 <body>
 	<article class="page-container">

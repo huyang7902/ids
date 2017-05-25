@@ -127,6 +127,7 @@ public class LoginController extends BaseController {
 		String token = CookieUtils.getCookieValue(request, Constants.IDS_USER_TOKEN);
 		loginUser.setTel(tel);
 		loginUser.setEmail(email);
+		loginUser.setPassword(userService.findUserById(loginUser.getUid()).getPassword());
 		IdsResult idsResult = userService.upDateUser(loginUser, token);
 		return idsResult;
 	}
@@ -142,6 +143,7 @@ public class LoginController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/resetPass.html")
+	@ResponseBody
 	public IdsResult resetPass(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(required = true) String originPass, @RequestParam(required = true) String newPass,
 			@RequestParam(required = true) String newPassConfirm) {

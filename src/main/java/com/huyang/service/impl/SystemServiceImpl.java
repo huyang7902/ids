@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.huyang.common.utils.JedisClient;
 import com.huyang.dao.mapper.BackMenuMapper;
 import com.huyang.dao.po.BackMenu;
 import com.huyang.dao.po.User;
 import com.huyang.service.SystemService;
+import com.huyang.web.Constants;
 
 /**
  * @Project: ids-service
@@ -26,6 +28,9 @@ public class SystemServiceImpl implements SystemService {
 
 	@Autowired
 	private BackMenuMapper backMenuMapper;
+	
+	@Autowired
+	private JedisClient jedisClient;
 
 
 
@@ -55,6 +60,8 @@ public class SystemServiceImpl implements SystemService {
 			backMenu.setParentId(-1);
 		}
 		backMenuMapper.insertSelective(backMenu);
+		jedisClient.del(Constants.IDS_ADMIN_MENU);
+		jedisClient.del(Constants.IDS_USER_MENU);
 		return backMenu;
 	}
 
@@ -65,12 +72,17 @@ public class SystemServiceImpl implements SystemService {
 			return 0;
 		}
 		backMenuMapper.updateByPrimaryKeySelective(backMenu);
+		jedisClient.del(Constants.IDS_ADMIN_MENU);
+		jedisClient.del(Constants.IDS_USER_MENU);
 		return 1;
 	}
 
 	@Override
 	public int deleteBackMenusByIds(List<Integer> ids) {
+		jedisClient.del(Constants.IDS_ADMIN_MENU);
+		jedisClient.del(Constants.IDS_USER_MENU);
 		return backMenuMapper.batchDeleteMenusByIds(ids);
+		
 	}
 
 

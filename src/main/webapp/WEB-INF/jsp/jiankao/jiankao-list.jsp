@@ -59,7 +59,7 @@
 		<c:if test="${loginUser.accessRoleLevele == 3 }" >
 			<div class="cl pd-5 bg-1 bk-gray mt-20">
 				<span class="l"> <a href="javascript:;"
-					onclick="jiankao_add('添加用户','jiankao-list.html?act=add&collegeId=${college.collegeId}&professionId=${profession.professionId }','','500')"
+					onclick="jiankao_add('添加监考','jiankao-list.html?act=add&collegeId=${college.collegeId}&professionId=${profession.professionId }','','800')"
 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
 						添加监考</a></span>
 				</span>
@@ -122,7 +122,7 @@
 										class="ml-5" style="text-decoration: none"><i
 											class="Hui-iconfont">&#xe603;</i></a> 
 									<a title="编辑" href="javascript:;"
-										onclick="jiankao_edit('编辑','jiankao-list.html?act=edit&examId=${exam.id }','4','','510')"
+										onclick="jiankao_edit('编辑','jiankao-list.html?act=edit&examId=${exam.id }','4','','800')"
 										class="ml-5" style="text-decoration: none"><i
 											class="Hui-iconfont">&#xe6df;</i></a> 
 									<a title="删除"

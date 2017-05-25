@@ -58,7 +58,7 @@
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe62c;</i></label>
+					<label class="form-label col-xs-3"></label>
 					<div class="mt-20 skin-minimal">
 					  <div class="radio-box formControls">
 					    <input type="radio" id="radio-1" name="accessRoleLevele" value="1" checked>
